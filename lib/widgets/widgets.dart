@@ -1,6 +1,12 @@
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 
-class WidgetHelper{
+class WidgetHelper extends StatefulWidget {
+  const WidgetHelper({Key? key}) : super(key: key);
+
+  @override
+  _WidgetHelperState createState() => _WidgetHelperState();
+
   Widget GradientButton(BuildContext context,var _onpressed) {
     return Container(
       child: RaisedButton(
@@ -26,4 +32,85 @@ class WidgetHelper{
       ),
     );
   }
+
+  Widget ExpandableCardForm(BuildContext context,Widget form,String title,String description ){
+    return ExpandableNotifier(
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Card(
+            clipBehavior: Clip.antiAlias,
+            child: Column(
+              children: <Widget>[
+                SizedBox(
+                  height: 100,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.orange,
+                      shape: BoxShape.rectangle,
+                    ),
+                  ),
+                ),
+                ScrollOnExpand(
+                  scrollOnExpand: true,
+                  scrollOnCollapse: false,
+                  child: ExpandablePanel(
+                    theme: const ExpandableThemeData(
+                      headerAlignment: ExpandablePanelHeaderAlignment.center,
+                      tapBodyToCollapse: true,
+                    ),
+                    header: Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          "PAN VALIDATION",
+                          style: Theme.of(context).textTheme.body2,
+                        )),
+                    collapsed: Text(
+                      "Click to Enter Your PAN DETAILS",
+                      softWrap: true,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    expanded: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                            padding: EdgeInsets.only(bottom: 10),
+                            child: Text(
+                              "Pan Form will go here",
+                              softWrap: true,
+                              overflow: TextOverflow.fade,
+                            )),
+                        FlatButton(onPressed: (){
+                          print("Validation");
+                        }, child: Text("ENABLE 2nd Accordian")),
+                      ],
+                    ),
+                    builder: (_, collapsed, expanded) {
+                      return Padding(
+                        padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                        child: Expandable(
+                          collapsed: collapsed,
+                          expanded: expanded,
+                          theme: const ExpandableThemeData(crossFadePoint: 0),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ));
+  }
+}
+
+class _WidgetHelperState extends State<WidgetHelper> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+
+
+
 }

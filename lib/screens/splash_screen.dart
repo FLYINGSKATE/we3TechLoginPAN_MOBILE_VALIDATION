@@ -1,7 +1,5 @@
 import 'dart:async';
-
-import 'package:angel_broking_demo/screens/DemoScreen.dart';
-import 'package:angel_broking_demo/screens/mobilevalidation.dart';
+import 'package:angel_broking_demo/screens/mobile_validation.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {

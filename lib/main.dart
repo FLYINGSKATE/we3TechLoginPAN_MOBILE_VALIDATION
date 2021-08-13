@@ -1,13 +1,7 @@
-import 'package:angel_broking_demo/screens/DemoScreen.dart';
-import 'package:angel_broking_demo/screens/SignUpPage2.dart';
-import 'package:angel_broking_demo/screens/SignUpPage3.dart';
-import 'package:angel_broking_demo/screens/SignUpPage4.dart';
-import 'package:angel_broking_demo/screens/SplashScreen.dart';
-import 'package:angel_broking_demo/screens/emailvalidation.dart';
-import 'package:angel_broking_demo/screens/mobilevalidation.dart';
-import 'package:angel_broking_demo/screens/panvalidation.dart';
-import 'package:angel_broking_demo/screens/signUpPage1.dart';
-import 'package:angel_broking_demo/screens/signUpPage5.dart';
+import 'package:angel_broking_demo/screens/splash_screen.dart';
+import 'package:angel_broking_demo/screens/email_validation.dart';
+import 'package:angel_broking_demo/screens/mobile_validation.dart';
+import 'package:angel_broking_demo/screens/pan_and_bank_validation.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -37,17 +31,10 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => PanValidation(),
-        '/demoscreen':(context) => DemoScreen(),
+        '/': (context) => PanAndBankValidation(),
         '/mobilevalidation':(context)=>MobileValidation(),
-        '/panvalidation':(context)=>PanValidation(),
         '/emailvalidation':(context)=>EmailValidation(),
-
-        '/signuppage1': (context) => SignUpPage_One(),
-        '/signuppage2': (context) => SignUpPage_Two(),
-        '/signuppage3': (context) => SignUpPage_Three(),
-        '/signuppage4': (context) => SignUpPage_Four(),
-        '/signuppage5': (context) => SignUpPage_Five(),
+        '/panandbankvalidation':(context)=>PanAndBankValidation(),
       },
     );
   }
