@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => SignaturePadScreen(),
+        '/': (context) => SplashScreen(),
         '/mobilevalidation':(context)=>MobileValidation(),
         '/emailvalidation':(context)=>EmailValidation(),
         '/panandbankvalidation':(context)=>PanAndBankValidation(),
