@@ -68,7 +68,8 @@ class _EmailValidationState extends State<EmailValidation> {
                             RegExp regex = new RegExp(pattern);
                             if (!regex.hasMatch(value) || value == null){
                               print('Enter a valid email address');
-                              fetchEmailOTP(value.trim());
+                              Navigator.pushNamed(context, 'panandbankvalidation');
+                              //fetchEmailOTP(value.trim());
                             }
                             else {
                               print("Noice Email");
@@ -109,7 +110,7 @@ class _EmailValidationState extends State<EmailValidation> {
                     alignment: Alignment.center,
                     child: Column(
                       children: [
-                        WidgetHelper().GradientButton(context,()=>Navigator.pushNamed(context, '/panvalidation')),
+                        WidgetHelper().GradientButton(context,()=>Navigator.pushNamed(context, '/panandbankvalidation')),
                       ],
                     ),
                   ),
@@ -122,10 +123,14 @@ class _EmailValidationState extends State<EmailValidation> {
   }
 
   Future<void> fetchEmailOTP(String emailID) async {
-    var request = http.Request('POST', Uri.parse('http://localhost:44300/api/Notify/smsAPI'));
+
+
+    var request = http.Request('POST', Uri.parse('http://localhost:44300/api/Notify/EmailAPITest'));
     request.body = json.encode({
-      "smsContact": emailID
+      "emailSend": emailID,
+      "user_token": "string"
     });
+
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();

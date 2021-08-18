@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 
 
 bool isPanValidatedSuccessfully = false;
+bool isBankValidatedSuccessfully = false;
 
 class Task {
   String name;
@@ -25,6 +26,7 @@ class PanAndBankValidation extends StatefulWidget {
 class PanAndBankValidationState extends State<PanAndBankValidation> {
 
   ///User - Friendly Strings - only used for UI
+  String bankFormDescriptionText = "TAP to Enter Your BANK DETAILS";
   String panFormDescriptionText= "TAP to Enter Your PAN DETAILS";
   List<Color> myGradientColor = <Color>[
     Color.fromARGB(255, 127, 0, 255),
@@ -32,6 +34,8 @@ class PanAndBankValidationState extends State<PanAndBankValidation> {
   ];
   double panSubmittedHeight = 100.0;
   double bankSubmittedHeight = 100.0;
+  ExpandableController _panExpandableController = ExpandableController(initialExpanded: true);
+  ExpandableController _bankExpandableController = ExpandableController(initialExpanded: true);
 
   //Fetching User Data inside this Variables
   late Task task ;
@@ -39,6 +43,9 @@ class PanAndBankValidationState extends State<PanAndBankValidation> {
   TextEditingController _panNumberTextEditingController = TextEditingController();
   TextEditingController _dateController = TextEditingController();
   DateTime selectedDate = DateTime.now();
+
+  TextEditingController _ifscCodeTextEditingController = TextEditingController();
+  TextEditingController _bankTextEditingController = TextEditingController();
 
   _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -54,7 +61,6 @@ class PanAndBankValidationState extends State<PanAndBankValidation> {
         _dateController.text = date;
       });
   }
-
 
   //API Header
   var headers = {
@@ -86,6 +92,7 @@ class PanAndBankValidationState extends State<PanAndBankValidation> {
           physics: const BouncingScrollPhysics(),
           children: <Widget>[
             ExpandableNotifier(
+              controller: _panExpandableController,
                 child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: Card(
@@ -144,6 +151,7 @@ class PanAndBankValidationState extends State<PanAndBankValidation> {
             Visibility(
                 visible: isPanValidatedSuccessfully,
                 child: ExpandableNotifier(
+                    controller: _bankExpandableController,
                     child: Padding(
                       padding: const EdgeInsets.all(10),
                       child: Card(
@@ -174,11 +182,11 @@ class PanAndBankValidationState extends State<PanAndBankValidation> {
                                 header: Padding(
                                     padding: EdgeInsets.all(10),
                                     child: Text(
-                                      "PAN VALIDATION",
+                                      "BANK VALIDATION",
                                       style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20.0),
                                     )),
                                 collapsed: Text(
-                                  panFormDescriptionText,
+                                  bankFormDescriptionText,
                                   softWrap: true,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
@@ -201,6 +209,7 @@ class PanAndBankValidationState extends State<PanAndBankValidation> {
                       ),
                     )),
             ),
+            WidgetHelper().GradientButton(context,(){Navigator.pushReplacementNamed(context,'/ocrvalidation');})
           ],
         ),
       ),
@@ -258,6 +267,7 @@ class PanAndBankValidationState extends State<PanAndBankValidation> {
       child: Container(
         child: RaisedButton(
         onPressed: (){setState(() {
+          _panExpandableController.expanded = false;
           isPanValidatedSuccessfully = true;
           panFormDescriptionText = "PAN Verified Successfully!";
           panSubmittedHeight = 10.0;
@@ -289,46 +299,144 @@ class PanAndBankValidationState extends State<PanAndBankValidation> {
     return Column(
       children: [
         TextField(
+          controller: _bankTextEditingController,
           decoration: InputDecoration(
             border: OutlineInputBorder(),
             hintText: 'Enter BANK A/C NUMBER',
+          ),
+        ),
+        Row(
+          children: [
+            Flexible(
+              child: TextField(
+                controller: _ifscCodeTextEditingController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'IFSC CODE',
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.all(25),
+              child: FlatButton(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('SEARCH', style: TextStyle(fontSize: 20.0),),
+                ),
+                color: Colors.yellow,
+                textColor: Colors.black,
+                onPressed: () {},
+              ),
+            ),
+          ],
+        ),
+        Align(
+          alignment: Alignment.center,
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.security,color: Colors.blue,),
+                  Text("Your Financial Information is Secure With In Us",style: TextStyle(color: Colors.blue,fontWeight: FontWeight.bold),),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  child: RaisedButton(
+                    onPressed: (){setState(() {
+                      fetchIsBankValid(_bankTextEditingController.text.trim(), _ifscCodeTextEditingController.text.trim());
+                    });},
+                    textColor: Colors.white,
+                    padding: const EdgeInsets.all(0.0),
+                    child: Container(
+                      width: 300,
+                      decoration: BoxDecoration(
+                          gradient: new LinearGradient(
+                            colors: [
+                              Color.fromARGB(255, 127, 0, 255),
+                              Color.fromARGB(255, 225, 0, 255)
+                            ],
+                          )
+                      ),
+                      padding: const EdgeInsets.all(10.0),
+                      child: Text("TRIAL PURPOSE", textAlign: TextAlign.center,),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ],
     );
   }
 
+  Future<bool> fetchIsBankValid(String bankAccountNumber,String ifscCode) async {
+    var request = http.Request('POST', Uri.parse('http://localhost:44300/api/Notify/BankVerify'));
+
+    request.body = json.encode({
+      "beneficiary_account_no": bankAccountNumber,
+      "beneficiary_ifsc": ifscCode
+    });
+
+    //request.body = json.encode({
+      //"beneficiary_account_no": "39981374255",
+      //"beneficiary_ifsc": "SBIN0003671"
+    //});
+
+    request.headers.addAll(headers);
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      String result = await response.stream.bytesToString();
+      Map valueMap = jsonDecode(result);
+      print(result);
+      if(valueMap["verified"]){
+        print("YOUR BANK IS VALIDATED");
+        _bankExpandableController.expanded=false;
+        isBankValidatedSuccessfully = true;
+        bankFormDescriptionText = "BANK Verified Successfully!";
+        bankSubmittedHeight = 10.0;
+        setState(() {});
+        return true;
+      }
+      else{
+        print("Something went wrong");
+        return false;
+      }
+    }
+    else {
+      print(response.reasonPhrase);
+      return false;
+    }
+  }
+
   Future<bool> fetchIsPanValid(String fullName,String dOB,String panNumber) async {
-
     var request = http.Request('POST', Uri.parse('http://localhost:44300/api/Notify/PanAPITest'));
-
     request.body = json.encode({
       "pan_no": panNumber,
       "full_name": fullName,
       "date_of_birth": dOB,
     });
-
     //request.body = json.encode({
     //  "pan_no": "HCAPK4259Q",
     //  "full_name": "KHAN ASHRAF SALIM",
     //  "date_of_birth": "31-03-2000"
     //});
-
     request.headers.addAll(headers);
-
     http.StreamedResponse response = await request.send();
-
     if (response.statusCode == 200) {
-      //print(await response.stream.bytesToString());
       String result = await response.stream.bytesToString();
       Map valueMap = jsonDecode(result);
-      //print(await response.stream.bytesToString());
+      print(result);
       if(valueMap["is_pan_dob_valid"] && valueMap["name_matched"]){
         print("YOUR PAN CARD IS VALID");
+        _panExpandableController.expanded=false;
+        panFormDescriptionText = "PAN Verified Successfully!";
+        panSubmittedHeight = 10.0;
         isPanValidatedSuccessfully = true;
-        setState(() {
-
-        });
+        setState(() {});
         return true;
       }
       else{
@@ -341,79 +449,5 @@ class PanAndBankValidationState extends State<PanAndBankValidation> {
       print(response.reasonPhrase);
       return false;
     }
-  }
-}
-
-class Card1 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ExpandableNotifier(
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Card(
-            clipBehavior: Clip.antiAlias,
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 100,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.orange,
-                      shape: BoxShape.rectangle,
-                    ),
-                  ),
-                ),
-                ScrollOnExpand(
-                  scrollOnExpand: true,
-                  scrollOnCollapse: false,
-                  child: ExpandablePanel(
-                    theme: const ExpandableThemeData(
-                      headerAlignment: ExpandablePanelHeaderAlignment.center,
-                      tapBodyToCollapse: true,
-                    ),
-                    header: Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Text(
-                          "BANK VALIDATION",
-                          style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20.0),
-                        )),
-                    collapsed: Text(
-                      "TAP to Enter Bank Details",
-                      softWrap: true,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    expanded: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                          Padding(
-                              padding: EdgeInsets.only(bottom: 10),
-                              child: Text(
-                                "Pan Form will go here",
-                                softWrap: true,
-                                overflow: TextOverflow.fade,
-                              )),
-                        FlatButton(onPressed: (){
-                          print("Validation");
-                          isPanValidatedSuccessfully = true;
-                        }, child: Text("ENABLE 2nd Accordian")),
-                      ],
-                    ),
-                    builder: (_, collapsed, expanded) {
-                      return Padding(
-                        padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                        child: Expandable(
-                          collapsed: collapsed,
-                          expanded: expanded,
-                          theme: const ExpandableThemeData(crossFadePoint: 0),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ));
   }
 }

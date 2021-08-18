@@ -1,3 +1,5 @@
+import 'package:angel_broking_demo/screens/ImageUploadTrial.dart';
+import 'package:angel_broking_demo/screens/ocr_validation_screen.dart';
 import 'package:angel_broking_demo/screens/splash_screen.dart';
 import 'package:angel_broking_demo/screens/email_validation.dart';
 import 'package:angel_broking_demo/screens/mobile_validation.dart';
@@ -14,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Tech X Prototype',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         // This is the theme of your application.
@@ -31,10 +33,11 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => PanAndBankValidation(),
+        '/': (context) => SplashScreen(),
         '/mobilevalidation':(context)=>MobileValidation(),
         '/emailvalidation':(context)=>EmailValidation(),
         '/panandbankvalidation':(context)=>PanAndBankValidation(),
+        '/ocrvalidation':(context)=>OcrValidationScreen(title: 'Image Picker Example'),
       },
     );
   }
