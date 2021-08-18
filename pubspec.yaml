@@ -32,10 +32,16 @@ dependencies:
   url_launcher: ^6.0.9
   intl_phone_field: ^2.0.1
   file_picker: ^3.0.4
-  workmanager: ^0.4.1
-  shared_preferences: ^2.0.6
+  shared_preferences: 0.5.6
   http: ^0.13.3
   expandable: ^5.0.1
+  image_picker: ^0.8.3+2
+  video_player: ^2.1.13
+  dio: ^4.0.0
+  geolocator: ^7.4.0
+  fluttertoast: ^8.0.8
+  geocoder: ^0.2.1
+  local_auth: ^1.1.0
 
 
 dev_dependencies:
