@@ -1,5 +1,6 @@
 import 'package:angel_broking_demo/screens/ocr_validation_screen.dart';
 import 'package:angel_broking_demo/screens/personal_details_screen.dart';
+import 'package:angel_broking_demo/screens/signature_pad_screen.dart';
 import 'package:angel_broking_demo/screens/splash_screen.dart';
 import 'package:angel_broking_demo/screens/email_validation_screen.dart';
 import 'package:angel_broking_demo/screens/mobile_validation_screen.dart';
@@ -33,12 +34,13 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => OcrValidationScreen(title: 'Tech X Lab'),
+        '/': (context) => SignaturePadScreen(),
         '/mobilevalidation':(context)=>MobileValidation(),
         '/emailvalidation':(context)=>EmailValidation(),
         '/panandbankvalidation':(context)=>PanAndBankValidation(),
         '/ocrvalidation':(context)=>OcrValidationScreen(title: 'Tech X Lab'),
         '/personaldetails':(context)=>PersonalDetailsScreen(),
+        '/signaturepad':(context)=>SignaturePadScreen(),
       },
     );
   }

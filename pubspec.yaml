@@ -42,6 +42,7 @@ dependencies:
   fluttertoast: ^8.0.8
   geocoder: ^0.2.1
   local_auth: ^1.1.0
+  syncfusion_flutter_signaturepad: ^19.2.56
 
 
 dev_dependencies:
