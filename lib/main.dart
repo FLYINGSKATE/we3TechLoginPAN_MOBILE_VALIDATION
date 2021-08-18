@@ -1,9 +1,9 @@
-import 'package:angel_broking_demo/screens/ImageUploadTrial.dart';
 import 'package:angel_broking_demo/screens/ocr_validation_screen.dart';
+import 'package:angel_broking_demo/screens/personal_details_screen.dart';
 import 'package:angel_broking_demo/screens/splash_screen.dart';
-import 'package:angel_broking_demo/screens/email_validation.dart';
-import 'package:angel_broking_demo/screens/mobile_validation.dart';
-import 'package:angel_broking_demo/screens/pan_and_bank_validation.dart';
+import 'package:angel_broking_demo/screens/email_validation_screen.dart';
+import 'package:angel_broking_demo/screens/mobile_validation_screen.dart';
+import 'package:angel_broking_demo/screens/pan_and_bank_validation_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -33,11 +33,12 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => SplashScreen(),
+        '/': (context) => OcrValidationScreen(title: 'Tech X Lab'),
         '/mobilevalidation':(context)=>MobileValidation(),
         '/emailvalidation':(context)=>EmailValidation(),
         '/panandbankvalidation':(context)=>PanAndBankValidation(),
-        '/ocrvalidation':(context)=>OcrValidationScreen(title: 'Image Picker Example'),
+        '/ocrvalidation':(context)=>OcrValidationScreen(title: 'Tech X Lab'),
+        '/personaldetails':(context)=>PersonalDetailsScreen(),
       },
     );
   }

@@ -1,3 +1,4 @@
+import 'package:angel_broking_demo/ApiRepository/apirepository.dart';
 import 'package:angel_broking_demo/widgets/widgets.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
@@ -250,10 +251,19 @@ class PanAndBankValidationState extends State<PanAndBankValidation> {
           padding: const EdgeInsets.all(8.0),
           child: TextField(
             controller: _panNumberTextEditingController,
-            onChanged: (panNumber) {
+            onChanged: (panNumber) async {
               if(panNumber.length==10 && _fullNameTextEditingController.text!="" && _dateController.text!=""){
                 print("Full Name :"+_fullNameTextEditingController.text+"Date Time :"+_dateController.text+"Pan Number :"+_panNumberTextEditingController.text);
-                fetchIsPanValid(_fullNameTextEditingController.text,_dateController.text,_panNumberTextEditingController.text);
+                isPanValidatedSuccessfully = await ApiRepo().fetchIsPanValid(_fullNameTextEditingController.text,_dateController.text,_panNumberTextEditingController.text);
+                if(isPanValidatedSuccessfully){
+                  _panExpandableController.expanded=false;
+                  panFormDescriptionText = "PAN Verified Successfully!";
+                  panSubmittedHeight = 10.0;
+                  isPanValidatedSuccessfully = true;
+                  setState(() {
+
+                  });
+                }
               }
             },
             decoration: InputDecoration(
@@ -285,7 +295,7 @@ class PanAndBankValidationState extends State<PanAndBankValidation> {
             )
           ),
           padding: const EdgeInsets.all(10.0),
-          child: Text("TRIAL PURPOSE", textAlign: TextAlign.center,),
+          child: Text("VALIDATE PAN", textAlign: TextAlign.center,),
           ),
         ),
       ),
@@ -345,9 +355,16 @@ class PanAndBankValidationState extends State<PanAndBankValidation> {
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
                   child: RaisedButton(
-                    onPressed: (){setState(() {
-                      fetchIsBankValid(_bankTextEditingController.text.trim(), _ifscCodeTextEditingController.text.trim());
-                    });},
+                    onPressed: () async {
+                      isBankValidatedSuccessfully = await ApiRepo().fetchIsBankValid(_bankTextEditingController.text.trim(), _ifscCodeTextEditingController.text.trim());
+                      if(isBankValidatedSuccessfully){
+                        _bankExpandableController.expanded=false;
+                        isBankValidatedSuccessfully = true;
+                        bankFormDescriptionText = "BANK Verified Successfully!";
+                        bankSubmittedHeight = 10.0;
+                        setState(() {});
+                      }
+                    },
                     textColor: Colors.white,
                     padding: const EdgeInsets.all(0.0),
                     child: Container(
@@ -361,7 +378,7 @@ class PanAndBankValidationState extends State<PanAndBankValidation> {
                           )
                       ),
                       padding: const EdgeInsets.all(10.0),
-                      child: Text("TRIAL PURPOSE", textAlign: TextAlign.center,),
+                      child: Text("PROCEED", textAlign: TextAlign.center,),
                     ),
                   ),
                 ),
@@ -371,83 +388,5 @@ class PanAndBankValidationState extends State<PanAndBankValidation> {
         ),
       ],
     );
-  }
-
-  Future<bool> fetchIsBankValid(String bankAccountNumber,String ifscCode) async {
-    var request = http.Request('POST', Uri.parse('http://localhost:44300/api/Notify/BankVerify'));
-
-    request.body = json.encode({
-      "beneficiary_account_no": bankAccountNumber,
-      "beneficiary_ifsc": ifscCode
-    });
-
-    //request.body = json.encode({
-      //"beneficiary_account_no": "39981374255",
-      //"beneficiary_ifsc": "SBIN0003671"
-    //});
-
-    request.headers.addAll(headers);
-    http.StreamedResponse response = await request.send();
-    if (response.statusCode == 200) {
-      String result = await response.stream.bytesToString();
-      Map valueMap = jsonDecode(result);
-      print(result);
-      if(valueMap["verified"]){
-        print("YOUR BANK IS VALIDATED");
-        _bankExpandableController.expanded=false;
-        isBankValidatedSuccessfully = true;
-        bankFormDescriptionText = "BANK Verified Successfully!";
-        bankSubmittedHeight = 10.0;
-        setState(() {});
-        return true;
-      }
-      else{
-        print("Something went wrong");
-        return false;
-      }
-    }
-    else {
-      print(response.reasonPhrase);
-      return false;
-    }
-  }
-
-  Future<bool> fetchIsPanValid(String fullName,String dOB,String panNumber) async {
-    var request = http.Request('POST', Uri.parse('http://localhost:44300/api/Notify/PanAPITest'));
-    request.body = json.encode({
-      "pan_no": panNumber,
-      "full_name": fullName,
-      "date_of_birth": dOB,
-    });
-    //request.body = json.encode({
-    //  "pan_no": "HCAPK4259Q",
-    //  "full_name": "KHAN ASHRAF SALIM",
-    //  "date_of_birth": "31-03-2000"
-    //});
-    request.headers.addAll(headers);
-    http.StreamedResponse response = await request.send();
-    if (response.statusCode == 200) {
-      String result = await response.stream.bytesToString();
-      Map valueMap = jsonDecode(result);
-      print(result);
-      if(valueMap["is_pan_dob_valid"] && valueMap["name_matched"]){
-        print("YOUR PAN CARD IS VALID");
-        _panExpandableController.expanded=false;
-        panFormDescriptionText = "PAN Verified Successfully!";
-        panSubmittedHeight = 10.0;
-        isPanValidatedSuccessfully = true;
-        setState(() {});
-        return true;
-      }
-      else{
-        print("Something went wrong");
-        return false;
-      }
-
-    }
-    else {
-      print(response.reasonPhrase);
-      return false;
-    }
   }
 }

@@ -1,26 +1,35 @@
+import 'package:angel_broking_demo/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
-class PersonalDetailsPage extends StatefulWidget {
+class PersonalDetailsScreen extends StatefulWidget {
   @override
-  _PersonalDetailsPageState createState() => _PersonalDetailsPageState();
+  _PersonalDetailsScreenState createState() => _PersonalDetailsScreenState();
 }
 
-class _PersonalDetailsPageState extends State<PersonalDetailsPage> {
+class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
 
   String annualIncome = '1-5 Lac';
   String occupation = 'PRIVATE SECTOR';
+
+  List<Color> myGradientColor = <Color>[
+    Color.fromARGB(255, 127, 0, 255),
+    Color.fromARGB(255, 225, 0, 255)
+  ];
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         appBar: AppBar(
-          title: Text('BANK DETAILS'),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.translate),
-            ),
-          ],
+          flexibleSpace: Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: myGradientColor,
+                  )
+              )),
+          centerTitle: true,
+          title: Text('Tech X'),
         ),
         body: SingleChildScrollView(
           child: IntrinsicHeight(
@@ -124,15 +133,7 @@ class _PersonalDetailsPageState extends State<PersonalDetailsPage> {
                           alignment: Alignment.center,
                           child: Container(
                             margin: EdgeInsets.all(25),
-                            child: FlatButton(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text('PROCEED', style: TextStyle(fontSize: 20.0),),
-                              ),
-                              color: Colors.yellow,
-                              textColor: Colors.black,
-                              onPressed: () {},
-                            ),
+                            child: WidgetHelper().GradientButton(context, (){}),
                           ),
                         ),
                       ],
