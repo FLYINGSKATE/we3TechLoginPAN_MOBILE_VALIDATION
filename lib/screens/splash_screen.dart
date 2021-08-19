@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -49,8 +50,7 @@ class SplashScreenState extends State<SplashScreen> {
 
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
-    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high,timeLimit: Duration(seconds: 5),
-        forceAndroidLocationManager: true).catchError((err) async {
+    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high,timeLimit: Duration(seconds: 6)).catchError((err) async {
       print(err);
       await Geolocator.getLastKnownPosition();
     });
@@ -62,21 +62,22 @@ class SplashScreenState extends State<SplashScreen> {
     print("CURRENT POSITION :"+_currentPosition.latitude.toString());
     // this will get the coordinates from the lat-long using Geocoder Coordinates
     final coordinates = Coordinates(_currentPosition.latitude, _currentPosition.longitude);
-    showLocationToast(_currentPosition.latitude.toString());
+    showToastNotification(_currentPosition.latitude.toString());
     // this fetches multiple address, but you need to get the first address by doing the following two codes
     var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var first = addresses.first;
     print(first.countryName);
-    showLocationToast("Current Location : "+first.countryName+"-"+first.locality+"|"+first.subLocality+","+first.postalCode);
+    showToastNotification("Current Location : "+first.countryName+"-"+first.locality+"|"+first.subLocality+","+first.postalCode);
     //Enable this if location is working
-    //_getBioMetricsAuthentication();
+    _getBioMetricsAuthentication();
   }
 
   @override
   void initState(){
     super.initState();
+    _askForPermissions();
     //Disable this if location is not working
-    _getBioMetricsAuthentication();
+    //_getBioMetricsAuthentication();
     _getCurrentLocation();
   }
 
@@ -101,7 +102,7 @@ class SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  showLocationToast(String currentLocation) {
+  showToastNotification(String currentLocation) {
     Fluttertoast.showToast(
         msg: currentLocation,
         toastLength: Toast.LENGTH_SHORT,
@@ -124,5 +125,27 @@ class SplashScreenState extends State<SplashScreen> {
         ),
       );
     }
+  }
+
+  Future<void> _askForPermissions() async {
+    print("asking for permissions");
+    if (await Permission.storage.request().isGranted) {
+      print("Permitted to use Local Storage");
+    }
+    else{
+      print("Don't Deny let us use local storage");
+    }
+    if (await Permission.location.request().isGranted) {
+      print("Permitted to use Locations Storage");
+    }
+    else{
+      print("Don't Deny Locations");
+    }
+    
+    /*if (await Permission.location.isDenied) {
+      showToastNotification("Please Give Location Access to the App");
+      Geolocator.openLocationSettings();
+    }*/
+
   }
 }
