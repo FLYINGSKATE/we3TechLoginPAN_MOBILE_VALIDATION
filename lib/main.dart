@@ -1,5 +1,6 @@
 import 'package:angel_broking_demo/screens/ocr_validation_screen.dart';
 import 'package:angel_broking_demo/screens/personal_details_screen.dart';
+import 'package:angel_broking_demo/screens/sample_Location.dart';
 import 'package:angel_broking_demo/screens/signature_pad_screen.dart';
 import 'package:angel_broking_demo/screens/splash_screen.dart';
 import 'package:angel_broking_demo/screens/email_validation_screen.dart';
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => SplashScreen(),
+        '/': (context) => PanAndBankValidation(),
         '/mobilevalidation':(context)=>MobileValidation(),
         '/emailvalidation':(context)=>EmailValidation(),
         '/panandbankvalidation':(context)=>PanAndBankValidation(),

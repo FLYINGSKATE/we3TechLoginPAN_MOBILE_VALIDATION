@@ -1,5 +1,6 @@
 import 'package:angel_broking_demo/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PersonalDetailsScreen extends StatefulWidget {
   @override
@@ -16,8 +17,12 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
     Color.fromARGB(255, 225, 0, 255)
   ];
 
+  TextEditingController _fullNameTextEditingController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    autoPopulateTextFields();
+    _fullNameTextEditingController.text = "";
     return Scaffold(
         appBar: AppBar(
           flexibleSpace: Container(
@@ -129,6 +134,19 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
                             ),
                           ),
                         ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0.0,10.0,0,0),
+                          child: Text("Your Full Name Is",style: TextStyle(fontWeight: FontWeight.bold),),
+                        ),
+                        Flexible(
+                          child: TextField(
+                            controller: _fullNameTextEditingController,
+                            enabled: false,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                            ),
+                          ),
+                        ),
                         Align(
                           alignment: Alignment.center,
                           child: Container(
@@ -145,5 +163,13 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
           ),
         )
     );
+  }
+
+  Future<void> autoPopulateTextFields() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //int counter = (prefs.getInt('counter') ?? 0) + 1;
+    //print('Pressed $counter times.');
+    _fullNameTextEditingController.text = prefs.getString('full_name');
+    print("Full Name Has Been Set To :"+prefs.getString('full_name'));
   }
 }

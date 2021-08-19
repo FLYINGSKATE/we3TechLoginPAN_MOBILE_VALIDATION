@@ -8,6 +8,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.6.1"
+  baseflow_plugin_template:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: "v2.1.0"
+      resolved-ref: "0695ef43c098d75efffe5fd6212390b853f05bf7"
+      url: "git://github.com/Baseflow/baseflow_plugin_template.git"
+    source: git
+    version: "2.1.0"
   boolean_selector:
     dependency: transitive
     description:

@@ -9,6 +9,7 @@ class SplashScreen extends StatefulWidget {
   @override
   SplashScreenState createState() => SplashScreenState();
 }
+
 class SplashScreenState extends State<SplashScreen> {
   /// Determine the current position of the device.
   ///
@@ -48,27 +49,33 @@ class SplashScreenState extends State<SplashScreen> {
 
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
-    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high,
-        forceAndroidLocationManager: true).catchError((err) => print(err));
+    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high,timeLimit: Duration(seconds: 5),
+        forceAndroidLocationManager: true).catchError((err) async {
+      print(err);
+      await Geolocator.getLastKnownPosition();
+    });
   }
 
 
   _getCurrentLocation() async {
     Position _currentPosition = await _determinePosition();
+    print("CURRENT POSITION :"+_currentPosition.latitude.toString());
     // this will get the coordinates from the lat-long using Geocoder Coordinates
     final coordinates = Coordinates(_currentPosition.latitude, _currentPosition.longitude);
-
-// this fetches multiple address, but you need to get the first address by doing the following two codes
+    showLocationToast(_currentPosition.latitude.toString());
+    // this fetches multiple address, but you need to get the first address by doing the following two codes
     var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var first = addresses.first;
     print(first.countryName);
     showLocationToast("Current Location : "+first.countryName+"-"+first.locality+"|"+first.subLocality+","+first.postalCode);
-    _getBioMetricsAuthentication();
+    //Enable this if location is working
+    //_getBioMetricsAuthentication();
   }
 
   @override
   void initState(){
     super.initState();
+    //Disable this if location is not working
     _getBioMetricsAuthentication();
     _getCurrentLocation();
   }
@@ -76,7 +83,6 @@ class SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       decoration: BoxDecoration(
           gradient: LinearGradient(

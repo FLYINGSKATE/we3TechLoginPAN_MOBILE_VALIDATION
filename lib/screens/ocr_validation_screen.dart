@@ -6,6 +6,7 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'package:angel_broking_demo/widgets/widgets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -422,6 +423,13 @@ class _OcrValidationScreenState extends State<OcrValidationScreen> {
                                   "Aadhar OCR VALIDATED Successfully",
                                   style: TextStyle(fontSize: 12.0,color: Colors.green),
                                 )
+                            ),
+                          ),
+                          Visibility(
+                            visible: isAadharOCRVerified,
+                            child: Padding(
+                                padding: EdgeInsets.all(10),
+                                child: WidgetHelper().GradientButton(context, Navigator.pushNamed(context, '/personaldetails'))
                             ),
                           ),
                         ],

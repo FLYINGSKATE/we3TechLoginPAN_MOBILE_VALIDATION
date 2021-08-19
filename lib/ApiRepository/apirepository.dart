@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 class ApiRepo {
 
   var headers = {
@@ -112,6 +113,11 @@ class ApiRepo {
       print(result);
       if(valueMap["is_pan_dob_valid"] && valueMap["name_matched"]){
         print("YOUR PAN CARD IS VALID");
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        //int counter = (prefs.getInt('counter') ?? 0) + 1;
+        //print('Pressed $counter times.');
+        await prefs.setString('full_name', fullName);
+        print("Full Name Has Been Set To :"+prefs.getString('full_name'));
         return true;
       }
       else{
@@ -125,6 +131,4 @@ class ApiRepo {
       return false;
     }
   }
-
-
 }
