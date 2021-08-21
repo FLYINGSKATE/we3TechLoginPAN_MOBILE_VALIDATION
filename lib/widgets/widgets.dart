@@ -1,5 +1,6 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class WidgetHelper extends StatefulWidget {
   const WidgetHelper({Key? key}) : super(key: key);
@@ -7,7 +8,7 @@ class WidgetHelper extends StatefulWidget {
   @override
   _WidgetHelperState createState() => _WidgetHelperState();
 
-  Widget GradientButton(BuildContext context,var _onpressed) {
+  Widget GradientButton(BuildContext context,var _onpressed,String BtnText) {
     return Container(
       child: RaisedButton(
         onPressed: _onpressed,
@@ -25,7 +26,7 @@ class WidgetHelper extends StatefulWidget {
           ),
           padding: const EdgeInsets.all(10.0),
           child: Text(
-            "Next",
+            BtnText,
             textAlign: TextAlign.center,
           ),
         ),
@@ -33,84 +34,42 @@ class WidgetHelper extends StatefulWidget {
     );
   }
 
-  Widget ExpandableCardForm(BuildContext context,Widget form,String title,String description ){
-    return ExpandableNotifier(
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Card(
-            clipBehavior: Clip.antiAlias,
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 100,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.orange,
-                      shape: BoxShape.rectangle,
-                    ),
-                  ),
-                ),
-                ScrollOnExpand(
-                  scrollOnExpand: true,
-                  scrollOnCollapse: false,
-                  child: ExpandablePanel(
-                    theme: const ExpandableThemeData(
-                      headerAlignment: ExpandablePanelHeaderAlignment.center,
-                      tapBodyToCollapse: true,
-                    ),
-                    header: Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Text(
-                          "PAN VALIDATION",
-                          style: Theme.of(context).textTheme.body2,
-                        )),
-                    collapsed: Text(
-                      "Click to Enter Your PAN DETAILS",
-                      softWrap: true,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    expanded: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                            padding: EdgeInsets.only(bottom: 10),
-                            child: Text(
-                              "Pan Form will go here",
-                              softWrap: true,
-                              overflow: TextOverflow.fade,
-                            )),
-                        FlatButton(onPressed: (){
-                          print("Validation");
-                        }, child: Text("ENABLE 2nd Accordian")),
-                      ],
-                    ),
-                    builder: (_, collapsed, expanded) {
-                      return Padding(
-                        padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                        child: Expandable(
-                          collapsed: collapsed,
-                          expanded: expanded,
-                          theme: const ExpandableThemeData(crossFadePoint: 0),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
+  Widget DetailsTitle(String detailsTitle){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 20.0,),
+        Row(
+          children: [
+            SizedBox(width: 10.0,),
+            Text(detailsTitle,textAlign:TextAlign.left,
+              style:GoogleFonts.openSans(textStyle: TextStyle(color: Colors.black,fontSize: 30.0,letterSpacing: .5,fontWeight: FontWeight.bold)),),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(8.0,10,0,0),
+          child: Container(height: 5, width: 35,
+            decoration: BoxDecoration(
+                color: Color(0xff6A4EEE),
+                borderRadius: BorderRadius.all(Radius.circular(20))
             ),
           ),
-        ));
+        ),
+        SizedBox(height: 20.0,),
+      ],
+    );
   }
+
+
 }
 
 class _WidgetHelperState extends State<WidgetHelper> {
+
+  Color primaryColorOfApp = Color(0xff6A4EEE);
 
   @override
   Widget build(BuildContext context) {
     return Container();
   }
-
-
 
 }

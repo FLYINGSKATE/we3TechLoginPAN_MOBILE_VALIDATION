@@ -1,7 +1,8 @@
+import 'dart:async';
+
 import 'package:angel_broking_demo/ApiRepository/apirepository.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-
 
 class MobileValidation extends StatefulWidget {
   const MobileValidation({Key? key}) : super(key: key);
@@ -13,6 +14,7 @@ class MobileValidation extends StatefulWidget {
 class _MobileValidationState extends State<MobileValidation> {
 
   late String OTPFromApi;
+  late String phoneNumberString;
 
   List<Color> myGradientColor = <Color>[
     Color.fromARGB(255, 127, 0, 255),
@@ -20,6 +22,17 @@ class _MobileValidationState extends State<MobileValidation> {
   ];
 
   bool isValidOTP = false;
+  bool isPhoneNumberValid = false;
+  bool enableOTPButton = true;
+
+  final interval = const Duration(seconds: 1);
+
+  final int _resendOTPIntervalTime = 3;
+
+  int currentSeconds = 0;
+
+  String get resendOTPButtonText =>
+      'Wait for :${((_resendOTPIntervalTime - currentSeconds) ~/ 60).toString().padLeft(2, '0')}: ${((_resendOTPIntervalTime - currentSeconds) % 60).toString().padLeft(2, '0')}';
 
   @override
   Widget build(BuildContext context) {
@@ -57,11 +70,19 @@ class _MobileValidationState extends State<MobileValidation> {
                           ),
                         ),
                         initialCountryCode: 'IN',
+
                         onChanged: (phone) async {
                           print(phone.completeNumber.length);
+                          phoneNumberString = phone.completeNumber;
                           if (phone.completeNumber.length >= 13) {
                             print(phone.completeNumber);
+                            isPhoneNumberValid = true;
+                            phoneNumberString = phone.completeNumber;
                             OTPFromApi = await ApiRepo().fetchOTP(phone.completeNumber);
+                            setState((){});
+                          }
+                          else{
+                            isPhoneNumberValid = false;
                           }
                         },
                       )
@@ -92,7 +113,20 @@ class _MobileValidationState extends State<MobileValidation> {
                       ),
                     ),
                   ),
-                  Text("Regenerate OTP",style: TextStyle(fontWeight: FontWeight.bold),),
+                  Visibility(
+                    visible: isPhoneNumberValid,
+                    child: TextButton(
+                      child: Text(
+                          "Resend OTP",style: TextStyle(fontWeight: FontWeight.bold)),
+                      onPressed: enableOTPButton ? () async {
+                        enableOTPButton = false;
+                        setState((){});
+                        startTimer();
+                        if(phoneNumberString.length==13 && isPhoneNumberValid){
+                          OTPFromApi = await ApiRepo().fetchOTP(phoneNumberString);
+                        }
+                      } : null),
+                  ),
                   Align(
                     alignment: Alignment.center,
                     child: Column(
@@ -130,5 +164,19 @@ class _MobileValidationState extends State<MobileValidation> {
           ),
         )
     );
+  }
+
+  void startTimer() {
+    var duration = interval;
+    Timer.periodic(duration, (timer) {
+      setState(() {
+        print(timer.tick);
+        currentSeconds = timer.tick;
+        if (timer.tick >= _resendOTPIntervalTime){
+          enableOTPButton = true;
+          timer.cancel();
+        }
+      });
+    });
   }
 }

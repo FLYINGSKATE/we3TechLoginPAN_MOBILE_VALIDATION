@@ -210,7 +210,7 @@ class PanAndBankValidationState extends State<PanAndBankValidation> {
                       ),
                     )),
             ),
-            WidgetHelper().GradientButton(context,(){Navigator.pushNamed(context,'/ocrvalidation');})
+            WidgetHelper().GradientButton(context,(){Navigator.pushNamed(context,'/ocrvalidation');},'Next')
           ],
         ),
       ),

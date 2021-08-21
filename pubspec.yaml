@@ -48,6 +48,7 @@ dependencies:
       url: git://github.com/Baseflow/baseflow_plugin_template.git
       ref: v2.1.0
   permission_handler: ^8.1.4+2
+  google_fonts: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -80,6 +81,11 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+  fonts:
+    - family: MyCustomIcons
+      fonts:
+        - asset: assets/fonts/MyCustomIcons.ttf
+          weight: 900
   # fonts:
   #   - family: Schyler
   #     fonts:

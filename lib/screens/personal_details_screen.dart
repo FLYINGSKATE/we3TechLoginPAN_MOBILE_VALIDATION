@@ -101,6 +101,7 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
                                   occupation = newValue!;
                                 });
                               },
+                              dropdownColor: Color(0xff6A4EEE),
                               items: <String>['PRIVATE SECTOR','PUBLIC SECTOR','etc']
                                   .map<DropdownMenuItem<String>>((String value) {
                                 return DropdownMenuItem<String>(
@@ -151,7 +152,7 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
                           alignment: Alignment.center,
                           child: Container(
                             margin: EdgeInsets.all(25),
-                            child: WidgetHelper().GradientButton(context, (){}),
+                            child: WidgetHelper().GradientButton(context, (){},'Next'),
                           ),
                         ),
                       ],

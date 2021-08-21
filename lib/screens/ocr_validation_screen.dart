@@ -425,13 +425,7 @@ class _OcrValidationScreenState extends State<OcrValidationScreen> {
                                 )
                             ),
                           ),
-                          Visibility(
-                            visible: isAadharOCRVerified,
-                            child: Padding(
-                                padding: EdgeInsets.all(10),
-                                child: WidgetHelper().GradientButton(context, Navigator.pushNamed(context, '/personaldetails'))
-                            ),
-                          ),
+
                         ],
                       ),
                     ),
@@ -493,7 +487,10 @@ class _OcrValidationScreenState extends State<OcrValidationScreen> {
                 ],
               ),
             ),
-
+           WidgetHelper().GradientButton(context, (){WidgetsBinding.instance!.addPostFrameCallback((_){
+             Navigator.pushNamed(context, "/personaldetails");
+             // Add Your Code here.
+           });}, 'Next'),
           ],
         ),
       ),

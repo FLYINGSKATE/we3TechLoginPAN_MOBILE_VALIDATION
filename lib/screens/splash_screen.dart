@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:angel_broking_demo/utils/authentication.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoder/geocoder.dart';
@@ -50,35 +51,49 @@ class SplashScreenState extends State<SplashScreen> {
 
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
-    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high,timeLimit: Duration(seconds: 6)).catchError((err) async {
+    return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+        timeLimit: Duration(seconds: 6)).catchError((err) async {
       print(err);
       await Geolocator.getLastKnownPosition();
     });
   }
 
-
   _getCurrentLocation() async {
     Position _currentPosition = await _determinePosition();
-    print("CURRENT POSITION :"+_currentPosition.latitude.toString());
+    print("CURRENT POSITION :LATITUDE "+_currentPosition.latitude.toString() + "LONGITUDE : "+_currentPosition.longitude.toString());
     // this will get the coordinates from the lat-long using Geocoder Coordinates
+
     final coordinates = Coordinates(_currentPosition.latitude, _currentPosition.longitude);
     showToastNotification(_currentPosition.latitude.toString());
+    showToastNotification("CURRENT POSITION :LATITUDE "+_currentPosition.latitude.toString() + "LONGITUDE : "+_currentPosition.longitude.toString());
+
     // this fetches multiple address, but you need to get the first address by doing the following two codes
     var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var first = addresses.first;
     print(first.countryName);
     showToastNotification("Current Location : "+first.countryName+"-"+first.locality+"|"+first.subLocality+","+first.postalCode);
-    //Enable this if location is working
-    _getBioMetricsAuthentication();
   }
 
   @override
   void initState(){
     super.initState();
-    _askForPermissions();
-    //Disable this if location is not working
-    //_getBioMetricsAuthentication();
-    _getCurrentLocation();
+    if(!kIsWeb){
+      _askForPermissions();
+      _getCurrentLocation();
+      //EMULKATOR
+      //_getBioMetricsAuthentication();
+      WidgetsBinding.instance!.addPostFrameCallback((_){
+        Navigator.pushNamed(context, "/mobilevalidation");
+        // Add Your Code here.
+      });
+
+    }
+    else{
+      _askForPermissions();
+      _getCurrentLocation();
+      Navigator.pushReplacementNamed(context, "/mobilevalidation");
+    }
   }
 
 
@@ -117,7 +132,7 @@ class SplashScreenState extends State<SplashScreen> {
   void _getBioMetricsAuthentication() async {
     bool isAuthenticated = await Authentication.authenticateWithBiometrics();
     if (isAuthenticated) {
-      Navigator.pushReplacementNamed(context, "/mobilevalidation");
+      Navigator.pushReplacementNamed(context, "/demoscreen");
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         Authentication.customSnackBar(

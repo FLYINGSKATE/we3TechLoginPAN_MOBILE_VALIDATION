@@ -1,21 +1,21 @@
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 class ApiRepo {
 
   var headers = {
-    'Authorization': 'Basic QUlZM0gxWFM1QVBUMkVNRkU1NFVXWjU2SVE4RlBLRlA6R083NUZXMllBWjZLUU0zRjFaU0dRVlVRQ1pQWEQ2T0Y=',
     'Content-Type': 'application/json'
   };
 
+  final String BASE_API_URL = 'https://10.0.2.2:5001';
+
   ///Mobile Validation API
   Future<String> fetchOTP(String phoneNumber) async {
-    var request = http.Request('POST', Uri.parse('http://localhost:44300/api/Notify/smsAPI'));
+    var request = http.Request('POST', Uri.parse(BASE_API_URL+'/api/MobileAuthentication/Send_OTP'));
     request.body = json.encode({
-      "smsContact": phoneNumber
+      "contact_No": phoneNumber,
+      "otp":"",
     });
     request.headers.addAll(headers);
 
@@ -23,10 +23,10 @@ class ApiRepo {
 
     if (response.statusCode == 200) {
       String result = await response.stream.bytesToString();
-      Map valueMap = jsonDecode(result);
+      //Map valueMap = jsonDecode(result);
       print(result);
-      print("Your OTP IS"+valueMap["jsonotpBKC"]);
-      return valueMap["jsonotpBKC"];
+      //print("Your OTP IS"+valueMap["jsonotpBKC"]);
+      return result;
     }
     else {
       print(response.reasonPhrase);
@@ -36,21 +36,18 @@ class ApiRepo {
 
   //Email Validation API
   Future<void> fetchEmailOTP(String emailID) async {
-    var request = http.Request('POST', Uri.parse('http://localhost:44300/api/Notify/EmailAPITest'));
-    request.body = json.encode({
-      "emailSend": emailID,
-      "user_token": "koibhi"
-    });
 
+    var request = http.Request('POST', Uri.parse('$BASE_API_URL/api/EmailAuthentication/EmailAuthentication'));
+    request.body = json.encode({
+      "send_Email": emailID,
+      "user_Token": "sssss"
+    });
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      String result = await response.stream.bytesToString();
-      Map valueMap = jsonDecode(result);
-      print(result);
-      print("Your OTP IS"+valueMap["jsonotpBKC"]);
+      print(await response.stream.bytesToString());
     }
     else {
       print(response.reasonPhrase);
@@ -59,20 +56,14 @@ class ApiRepo {
 
   ///Bank Validation API
   Future<bool> fetchIsBankValid(String bankAccountNumber,String ifscCode) async {
-    var request = http.Request('POST', Uri.parse('http://localhost:44300/api/Notify/BankVerify'));
 
-    request.body = json.encode({
-      "beneficiary_account_no": bankAccountNumber,
-      "beneficiary_ifsc": ifscCode
-    });
-
-    //request.body = json.encode({
-    //"beneficiary_account_no": "39981374255",
-    //"beneficiary_ifsc": "SBIN0003671"
-    //});
+    var request = http.Request('POST', Uri.parse(
+        '$BASE_API_URL/VerifyBankAccount?beneficiary_account_no=$bankAccountNumber&beneficiary_ifsc=$ifscCode'));
 
     request.headers.addAll(headers);
+
     http.StreamedResponse response = await request.send();
+
     if (response.statusCode == 200) {
       String result = await response.stream.bytesToString();
       Map valueMap = jsonDecode(result);
@@ -94,41 +85,41 @@ class ApiRepo {
 
   ///PAN Validation API
   Future<bool> fetchIsPanValid(String fullName,String dOB,String panNumber) async {
-    var request = http.Request('POST', Uri.parse('http://localhost:44300/api/Notify/PanAPITest'));
-    request.body = json.encode({
-      "pan_no": panNumber,
-      "full_name": fullName,
-      "date_of_birth": dOB,
-    });
-    //request.body = json.encode({
-    //  "pan_no": "HCAPK4259Q",
-    //  "full_name": "KHAN ASHRAF SALIM",
-    //  "date_of_birth": "31-03-2000"
-    //});
-    request.headers.addAll(headers);
+    fullName = fullName.replaceAll(' ', '%20');
+    var request = http.Request('POST', Uri.parse(
+        '$BASE_API_URL/PanAuthentication?'
+            'pan_no=$panNumber&full_name=$fullName&date_of_birth=$dOB'));
+
     http.StreamedResponse response = await request.send();
+
     if (response.statusCode == 200) {
       String result = await response.stream.bytesToString();
       Map valueMap = jsonDecode(result);
       print(result);
-      if(valueMap["is_pan_dob_valid"] && valueMap["name_matched"]){
+      if (valueMap["is_pan_dob_valid"] && valueMap["name_matched"]) {
         print("YOUR PAN CARD IS VALID");
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        //int counter = (prefs.getInt('counter') ?? 0) + 1;
-        //print('Pressed $counter times.');
+        fullName = fullName.replaceAll('%20',' ');
         await prefs.setString('full_name', fullName);
-        print("Full Name Has Been Set To :"+prefs.getString('full_name'));
+        print("Full Name Has Been Set To :" + prefs.getString('full_name'));
         return true;
       }
-      else{
+      else {
         print("Something went wrong");
         return false;
       }
-
     }
     else {
       print(response.reasonPhrase);
       return false;
     }
   }
+
+    //request.body = json.encode({
+    //  "pan_no": "HCAPK4259Q",
+    //  "full_name": "KHAN ASHRAF SALIM",
+    //  "date_of_birth": "31-03-2000"
+    //});
+    ///BANK AND PAN : 39981374255
+///IFSC :SBIN0003671
 }
