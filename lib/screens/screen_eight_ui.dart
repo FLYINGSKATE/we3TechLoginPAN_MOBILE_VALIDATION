@@ -1,11 +1,14 @@
 ///Upload Document Screen
+import 'dart:io';
 import 'dart:ui' as ui;
+import 'package:angel_broking_demo/ApiRepository/apirepository.dart';
 import 'package:angel_broking_demo/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
-
 
 class ScreenEight extends StatefulWidget {
   const ScreenEight({Key? key}) : super(key: key);
@@ -15,6 +18,48 @@ class ScreenEight extends StatefulWidget {
 }
 
 class _ScreenEightState extends State<ScreenEight> {
+
+  List<XFile>? _imageFileListAadhar,_imageFileListPan;
+
+  var headers = {
+    'Authorization': 'Basic QUlZM0gxWFM1QVBUMkVNRkU1NFVXWjU2SVE4RlBLRlA6R083NUZXMllBWjZLUU0zRjFaU0dRVlVRQ1pQWEQ2T0Y='
+  };
+
+  bool isPanOCRVerified = false;
+
+  bool isAadharOCRVerified = false;
+
+  set _imageFilePan(XFile? value) {
+    _imageFileListPan = value == null ? null : [value];
+  }
+
+  dynamic _pickImageErrorPan;
+  bool isVideo = false;
+
+  String? _retrieveDataError;
+
+  final ImagePicker _picker = ImagePicker();
+
+  void _onImageButtonPressedForPan(ImageSource source,
+      {BuildContext? context, bool isMultiImage = false}) async {
+    try {
+      final pickedFile = await _picker.pickImage(
+        source: source,
+      );
+      setState(() {
+        _imageFilePan = pickedFile;
+      });
+    } catch (e) {
+      setState(() {
+        _pickImageErrorPan = e;
+      });
+    }
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+  }
 
   Color primaryColorOfApp = Color(0xff6A4EEE);
 
@@ -59,36 +104,44 @@ class _ScreenEightState extends State<ScreenEight> {
                   textStyle: TextStyle(color: Colors.black, letterSpacing: .5,fontSize: 12),
                 ),),
                 SizedBox(height: 20,),
-                Row(
-                  children: [
-                    Container(
-                      color: Colors.transparent,
-                      width: MediaQuery.of(context).size.width/2,
-                      height: 60,
-                      child: FlatButton(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        onPressed: () {
-                          showPanCardImageUploadDialog();
-                        },
-                        color: primaryColorOfApp,
-                        child: Text(
-                            "Upload",
-                            style: GoogleFonts.openSans(
-                              textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 16,fontWeight: FontWeight.bold),)
-                        ),
-                      ),
+                Container(
+                  color: Colors.transparent,
+                  width: MediaQuery.of(context).size.width,
+                  height: 65,
+                  child: FlatButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
                     ),
-                    SizedBox(width: 20,),
-                    Icon(Icons.check_circle),
-                    SizedBox(width: 20,),
-                    Icon(Icons.remove_red_eye_outlined),
-                    SizedBox(width: 20,),
-                    Icon(Icons.delete),
-                  ],
+                    onPressed: () {
+                      showPanCardImageUploadOptionsDialog();
+                    },
+                    color: primaryColorOfApp,
+                    child: Text(
+                        "Upload",
+                        style: GoogleFonts.openSans(
+                          textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 16,fontWeight: FontWeight.bold),)
+                    ),
+                  ),
                 ),
-                SizedBox(height: 20,),
+
+                Padding(
+                  padding: const EdgeInsets.all(30.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(onPressed:() async {
+                        if (_imageFileListPan != null) {
+                          //Uploading File to Database
+                          isPanOCRVerified = await ApiRepo().PanOCRValidation(_imageFileListPan![0].path,_imageFileListPan![0]);
+                        }
+                      }, icon: Icon(Icons.check_circle,size: 36.0,)),
+                      SizedBox(width: 30,),
+                      IconButton(onPressed:(){ showUploadedPanCardImageDialog();}, icon: Icon(Icons.remove_red_eye_outlined,size: 36.0,)),
+                      SizedBox(width: 30,),
+                      IconButton(onPressed:(){ }, icon: Icon(Icons.delete,size: 36.0,)),
+                    ],
+                  ),
+                ),
                 Divider(thickness: 2.0,),
                 Text("Signature",style: GoogleFonts.openSans(
                   textStyle: TextStyle(color: Colors.black, letterSpacing: .5,fontSize: 22,fontWeight: FontWeight.bold),
@@ -113,7 +166,7 @@ class _ScreenEightState extends State<ScreenEight> {
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                         onPressed: () {
-                          showDialog();
+                          showDigitalPadDialog();
                         },
                         color: primaryColorOfApp,
                         child: Text(
@@ -141,14 +194,18 @@ class _ScreenEightState extends State<ScreenEight> {
                     ),
                   ],
                 ),
-                SizedBox(height: 40,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Icon(Icons.check_circle),
-                    Icon(Icons.remove_red_eye_outlined),
-                    Icon(Icons.delete),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.all(30.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.check_circle,size: 36.0,),
+                      SizedBox(width: 30,),
+                      Icon(Icons.remove_red_eye_outlined,size: 36.0,),
+                      SizedBox(width: 30,),
+                      Icon(Icons.delete,size: 36.0,),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -158,7 +215,8 @@ class _ScreenEightState extends State<ScreenEight> {
     );
   }
 
-  void showDialog() {
+  //Digital Pad Methods
+  void showDigitalPadDialog() {
     showGeneralDialog(
       barrierLabel: "Barrier",
       barrierDismissible: true,
@@ -176,7 +234,9 @@ class _ScreenEightState extends State<ScreenEight> {
                     padding: const EdgeInsets.fromLTRB(22.0,10.0,0.0,10.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
-                      child: Material(child: Text(
+                      child: Material(
+                        color: Colors.white,
+                        child: Text(
                           "Upload Signature",
                           style: GoogleFonts.openSans(
                             textStyle: TextStyle(color: Colors.black, letterSpacing: .5,fontSize: 20,fontWeight: FontWeight.bold),)
@@ -252,11 +312,9 @@ class _ScreenEightState extends State<ScreenEight> {
       },
     );
   }
-
   void _handleClearButtonPressed() {
     signatureGlobalKey.currentState!.clear();
   }
-
   void _handleSaveButtonPressed() async {
     final data =
     await signatureGlobalKey.currentState!.toImage(pixelRatio: 3.0);
@@ -278,7 +336,8 @@ class _ScreenEightState extends State<ScreenEight> {
     );
   }
 
-  void showPanCardImageUploadDialog() {
+  ///PAN CARD METHODS
+  void showPanCardImageUploadOptionsDialog() {
     showGeneralDialog(
       barrierLabel: "Barrier",
       barrierDismissible: true,
@@ -296,7 +355,9 @@ class _ScreenEightState extends State<ScreenEight> {
                     padding: const EdgeInsets.fromLTRB(22.0,10.0,0.0,10.0),
                     child: Align(
                       alignment: Alignment.center,
-                      child: Material(child: Text(
+                      child: Material(
+                        color: Colors.white,
+                        child: Text(
                           "Choose An Option!",
                           style: GoogleFonts.openSans(
                             textStyle: TextStyle(color: Colors.black, letterSpacing: .5,fontSize: 20,fontWeight: FontWeight.bold),)
@@ -316,7 +377,8 @@ class _ScreenEightState extends State<ScreenEight> {
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                           onPressed: () {
-
+                            isVideo = false;
+                            _onImageButtonPressedForPan(ImageSource.camera, context: context);
                           },
                           color: primaryColorOfApp,
                           child: Text(
@@ -338,7 +400,8 @@ class _ScreenEightState extends State<ScreenEight> {
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                           onPressed: () {
-
+                            isVideo = false;
+                            _onImageButtonPressedForPan(ImageSource.gallery, context: context);
                           },
                           color: primaryColorOfApp,
                           child: Text(
@@ -368,6 +431,127 @@ class _ScreenEightState extends State<ScreenEight> {
         );
       },
     );
+  }
+  void showUploadedPanCardImageDialog() {
+    showGeneralDialog(
+      barrierLabel: "Barrier",
+      barrierDismissible: true,
+      barrierColor: Colors.black.withOpacity(0.5),
+      transitionDuration: Duration(milliseconds: 400),
+      context: context,
+      pageBuilder: (_, __, ___) {
+        return Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            height: 600,
+            child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(22.0,10.0,0.0,10.0),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Material(
+                        color: Colors.white,
+                        child: Text(
+                            "Your Uploaded Pan Image",
+                            style: GoogleFonts.openSans(
+                              textStyle: TextStyle(color: Colors.black, letterSpacing: .5,fontSize: 20,fontWeight: FontWeight.bold),)
+                        ),),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  PANCardImagePreviewContainer(),
+                  Column(children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width/1.5,
+                        color: Colors.transparent,
+                        height: 60,
+                        child: FlatButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          color: primaryColorOfApp,
+                          child: Text(
+                              "Close",
+                              style: GoogleFonts.openSans(
+                                textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 16,fontWeight: FontWeight.bold),)
+                          ),
+                        ),
+                      ),
+                    ),
+                  ], mainAxisAlignment: MainAxisAlignment.spaceEvenly)
+                ],
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center),
+            margin: EdgeInsets.only(bottom: 20, left: 12, right: 12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(40),
+            ),
+          ),
+        );
+      },
+      transitionBuilder: (_, anim, __, child) {
+        return SlideTransition(
+          position: Tween(begin: Offset(0, 1), end: Offset(0, 0)).animate(anim),
+          child: child,
+        );
+      },
+    );
+  }
+  Widget PANCardImagePreviewContainer(){
+    final Text? retrieveError = _getRetrieveErrorWidget();
+    if (retrieveError != null) {
+      return retrieveError;
+    }
+    if (_imageFileListPan != null) {
+      //Uploading File to Database
+      //PanOCRValidation(_imageFileListPan![0].path,_imageFileListPan![0]);
+
+      return Expanded(
+        child: Semantics(
+            child: ListView.builder(
+              key: UniqueKey(),
+              itemBuilder: (context, index) {
+                // Why network for web?
+                // See https://pub.dev/packages/image_picker#getting-ready-for-the-web-platform
+                return Expanded(
+                  child: Semantics(
+                    label: 'image_picker_example_picked_image',
+                    child: kIsWeb ? Image.network(_imageFileListPan![index].path) : Image.file(File(_imageFileListPan![index].path)),
+                  ),
+                );
+              },
+              itemCount: _imageFileListPan!.length,
+            ),
+            label: 'image_picker_example_picked_images'),
+      );
+    } else if (_pickImageErrorPan != null) {
+      return Text(
+        'Pick image error: $_pickImageErrorPan',
+        textAlign: TextAlign.center,
+      );
+    } else {
+      return Container(
+        decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            color: primaryColorOfApp,
+        ),
+      );
+    }
+  }
+  Text? _getRetrieveErrorWidget() {
+    if (_retrieveDataError != null) {
+      final Text result = Text(_retrieveDataError!);
+      _retrieveDataError = null;
+      return result;
+    }
+    return null;
   }
 
 }

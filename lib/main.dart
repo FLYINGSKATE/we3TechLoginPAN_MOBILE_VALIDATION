@@ -68,12 +68,11 @@ class MyApp extends StatelessWidget {
         //is not restarted.
 
         //#6A4EEE
-
         primaryColor: Color(0xff6A4EEE),
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => ScreenEight(),
+        '/': (context) => ScreenNine(),
         '/screenone':(context)=>ScreenOne(),
         '/screentwo':(context)=>ScreenTwo(),
         '/screenthree':(context)=>ScreenThree(),

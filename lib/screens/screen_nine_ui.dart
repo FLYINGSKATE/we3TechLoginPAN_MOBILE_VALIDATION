@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 class ScreenNine extends StatefulWidget {
   const ScreenNine({Key? key}) : super(key: key);
 
@@ -44,52 +43,74 @@ class _ScreenNineState extends State<ScreenNine> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 WidgetHelper().DetailsTitle('Congratulations !'),
+                Image.asset("assets/images/congratulations.png"),
+                SizedBox(height: 20,),
                 Text("Your application is complete . After verification , you will recieve your login credentials on your e-mail.",style: GoogleFonts.openSans(
                   textStyle: TextStyle(color: Colors.black, letterSpacing: .5,fontSize: 16),
                 ),),
                 SizedBox(height: 20,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Column(
                   children: [
-                    Expanded(
-                      child: Container(
-                        color: Colors.transparent,
-                        height: 60,
-                        child: FlatButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          onPressed: () {
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      color: Colors.transparent,
+                      height: 60,
+                      child: FlatButton(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        onPressed: () {
 
-                          },
-                          color: primaryColorOfApp,
-                          child: Text(
-                              "Open F&O Account",textAlign: TextAlign.center,
-                              style: GoogleFonts.openSans(
-                                textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 16,fontWeight: FontWeight.bold),)
-                          ),
+                        },
+                        color: primaryColorOfApp,
+                        child: Text(
+                            "Open F&O Account",textAlign: TextAlign.center,
+                            style: GoogleFonts.openSans(
+                              textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 16,fontWeight: FontWeight.bold),)
                         ),
                       ),
                     ),
-                    SizedBox(width: 10,),
-                    Expanded(
-                      child: Container(
-                        color: Colors.transparent,
-                        height: 60,
-                        child: FlatButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          onPressed: () {},
-                          color: primaryColorOfApp,
-                          child: Text(
-                              "Add a Nominee",textAlign:TextAlign.center,
-                              style: GoogleFonts.openSans(
-                                textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 16,fontWeight: FontWeight.bold),)
-                          ),
+                    SizedBox(height: 20,),
+                    Container(
+                      color: Colors.transparent,
+                      height: 60,
+                      width: MediaQuery.of(context).size.width,
+                      child: FlatButton(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        onPressed: () {},
+                        color: primaryColorOfApp,
+                        child: Text(
+                            "Add a Nominee",textAlign:TextAlign.center,
+                            style: GoogleFonts.openSans(
+                              textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 16,fontWeight: FontWeight.bold),)
                         ),
                       ),
                     ),
+                    Container(
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.8),
+                            spreadRadius: 10,
+                            blurRadius: 5,
+                            offset: Offset(0, 7), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: Text("HOLA"),
+                    ),
+                    Text("Your PAN",style: GoogleFonts.openSans(
+                      textStyle: TextStyle(color: Colors.black, letterSpacing: .5,fontSize: 16),
+                    ),),
+                    Text("HCAPK4256Y",style: GoogleFonts.openSans(
+                      textStyle: TextStyle(color: Colors.black, letterSpacing: .5,fontSize: 16),
+                    ),),
+                    Text("Lorem Ipsum",style: GoogleFonts.openSans(
+                      textStyle: TextStyle(color: Colors.black, letterSpacing: .5,fontSize: 16),
+                    ),),
+
                   ],
                 ),
               ],

@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'dart:io';
+import 'package:http_parser/http_parser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 class ApiRepo {
 
   var headers = {
@@ -9,7 +11,6 @@ class ApiRepo {
   };
 
   //final String BASE_API_URL = 'https://10.0.2.2:5001';
-
   final String BASE_API_URL = 'https://localhost:5001';
 
   ///Mobile Validation API
@@ -110,6 +111,34 @@ class ApiRepo {
         print("Something went wrong");
         return false;
       }
+    }
+    else {
+      print(response.reasonPhrase);
+      return false;
+    }
+  }
+
+  ///OCR Validation API
+  Future<bool> PanOCRValidation(String imagePath,var imageP) async{
+    List<int> _selectedFile = await imageP.readAsBytes();
+    var request;
+    if(kIsWeb){
+      request = http.MultipartRequest('POST', Uri.parse(BASE_API_URL+'/api/DocumentOCR/OCR'));
+      request.files.add(await http.MultipartFile.fromBytes('front_part', _selectedFile,
+          contentType: new MediaType('application', 'octet-stream'),
+          filename: "file_up"));
+      request.headers.addAll(headers);
+    }
+    else{
+      request = http.MultipartRequest('POST', Uri.parse('http://localhost:44300/api/user/login/OCR'));
+      request.headers.addAll(headers);
+    }
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+      return true;
     }
     else {
       print(response.reasonPhrase);
