@@ -1,18 +1,24 @@
-import 'package:angel_broking_demo/icons/my_custom_icons.dart';
+import 'package:angel_broking_demo/ApiRepository/apirepository.dart';
 import 'package:angel_broking_demo/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 
-class ScreenOne extends StatefulWidget {
-  const ScreenOne({Key? key}) : super(key: key);
+class ScreenTwo extends StatefulWidget {
+  const ScreenTwo({Key? key}) : super(key: key);
 
   @override
-  _ScreenOneState createState() => _ScreenOneState();
+  _ScreenTwoState createState() => _ScreenTwoState();
 }
 
-class _ScreenOneState extends State<ScreenOne> {
+class _ScreenTwoState extends State<ScreenTwo> {
+
+  TextEditingController _ifscCodeTextEditingController = TextEditingController();
+  TextEditingController _bankTextEditingController = TextEditingController();
+
+  bool isPanValidatedSuccessfully = false;
+  bool isBankValidatedSuccessfully = false;
 
   Color primaryColorOfApp = Color(0xff6A4EEE);
 
@@ -168,6 +174,7 @@ class _ScreenOneState extends State<ScreenOne> {
                 SizedBox(height: 10,),
                 Flexible(
                     child: TextField(
+                      controller: _bankTextEditingController,
                       keyboardType: TextInputType.number,
                       cursorColor: primaryColorOfApp,
                       style: GoogleFonts.openSans(textStyle: TextStyle(color: Colors.black, letterSpacing: .5,fontSize: 14,fontWeight: FontWeight.bold)),
@@ -185,6 +192,7 @@ class _ScreenOneState extends State<ScreenOne> {
                 SizedBox(height: 10,),
                 Flexible(
                     child: TextField(
+                      controller: _ifscCodeTextEditingController,
                       cursorColor: primaryColorOfApp,
                       style: GoogleFonts.openSans(textStyle: TextStyle(color: Colors.black, letterSpacing: .5,fontSize: 14,fontWeight: FontWeight.bold)),
                       focusNode: _ifscTextFieldFocusNode,
@@ -207,7 +215,13 @@ class _ScreenOneState extends State<ScreenOne> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
-                    onPressed: () {Navigator.pushNamed(context, '/screentwo');},
+                    onPressed: () async {
+                      isBankValidatedSuccessfully = await ApiRepo().fetchIsBankValid(_bankTextEditingController.text.trim(), _ifscCodeTextEditingController.text.trim());
+                      if(isBankValidatedSuccessfully){
+                        isBankValidatedSuccessfully = true;
+                        setState(() {});
+                      }
+                    },
                     color: primaryColorOfApp,
                     child: Text(
                       "Proceed",

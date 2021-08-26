@@ -1,18 +1,47 @@
-import 'package:angel_broking_demo/icons/my_custom_icons.dart';
+//Mobile Validation
+
+import 'dart:async';
+
+import 'package:angel_broking_demo/ApiRepository/apirepository.dart';
+import 'package:angel_broking_demo/nuniyo_custom_icons.dart';
 import 'package:angel_broking_demo/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 
-class ScreenTwo extends StatefulWidget {
-  const ScreenTwo({Key? key}) : super(key: key);
+class ScreenOne extends StatefulWidget {
+  const ScreenOne({Key? key}) : super(key: key);
 
   @override
-  _ScreenTwoState createState() => _ScreenTwoState();
+  _ScreenOneState createState() => _ScreenOneState();
 }
 
-class _ScreenTwoState extends State<ScreenTwo> {
+class _ScreenOneState extends State<ScreenOne> {
+
+  late String OTPFromApi;
+  late String phoneNumberString;
+
+  List<Color> myGradientColor = <Color>[
+    Color.fromARGB(255, 127, 0, 255),
+    Color.fromARGB(255, 225, 0, 255)
+  ];
+
+  bool isValidOTP = false;
+  bool isPhoneNumberValid = false;
+  bool enableOTPButton = true;
+
+  final interval = const Duration(seconds: 1);
+
+  final int _resendOTPIntervalTime = 3;
+
+  int currentSeconds = 0;
+
+  bool isOTPSendOnce = false;
+
+  String get resendOTPButtonText =>
+      'Wait for :${((_resendOTPIntervalTime - currentSeconds) ~/ 60).toString().padLeft(2, '0')}: ${((_resendOTPIntervalTime - currentSeconds) % 60).toString().padLeft(2, '0')}';
+
 
   Color primaryColorOfApp = Color(0xff6A4EEE);
 
@@ -75,9 +104,13 @@ class _ScreenTwoState extends State<ScreenTwo> {
                     Text("Already have an account ? ",style: GoogleFonts.openSans(
                       textStyle: TextStyle(color: Colors.black, letterSpacing: .5,fontSize: 16,fontWeight: FontWeight.bold),
                     ),),
-                    Text("Sign In",style: GoogleFonts.openSans(
+                    TextButton(
+                      onPressed: (){
+                        Navigator.pushNamed(context, '/screentwo');
+                      },
+                      child:Text("Sign In",style: GoogleFonts.openSans(
                       textStyle: TextStyle(decoration: TextDecoration.underline,fontSize: 16,fontWeight: FontWeight.bold,color: primaryColorOfApp, letterSpacing: .5),
-                    ),)
+                    ),),)
                   ],
                 ),
                 SizedBox(height: 20,),
@@ -93,7 +126,7 @@ class _ScreenTwoState extends State<ScreenTwo> {
                         counter: Offstage(),
                         suffixIcon: Padding(
                           padding: const EdgeInsets.fromLTRB(0.0,0.0,20.0,0.0),
-                          child: Icon(MyCustomIcons.customMobile,size: 26.0,color: _phoneNumberFocusNode.hasFocus ?primaryColorOfApp : Colors.grey,),
+                          child: Icon(NuniyoCustomIcons.mobile_number_black,size: 26.0,color: _phoneNumberFocusNode.hasFocus ?primaryColorOfApp : Colors.grey,),
                         ),
                         labelText: _phoneNumberFocusNode.hasFocus ? 'Mobile Number' : 'Enter Mobile Number',
                           labelStyle: TextStyle(fontWeight: FontWeight.bold,
@@ -102,12 +135,13 @@ class _ScreenTwoState extends State<ScreenTwo> {
                       ),
                       onChanged: (_phoneNumber) async {
                         print(_phoneNumber.length);
-                        //phoneNumberString = _phoneNumber;
+                        phoneNumberString = _phoneNumber;
                         if (_phoneNumber.length >= 10) {
                           print(_phoneNumber);
-                          //isPhoneNumberValid = true;
-                          //phoneNumberString = _phoneNumber;
-                          //OTPFromApi = await ApiRepo().fetchOTP(_phoneNumber);
+                          isPhoneNumberValid = true;
+                          phoneNumberString = _phoneNumber;
+                          OTPFromApi = await ApiRepo().fetchOTP(_phoneNumber);
+                          isOTPSendOnce = true;
                           setState((){});
                         }
                         else{
@@ -118,9 +152,20 @@ class _ScreenTwoState extends State<ScreenTwo> {
                 ),
                 Flexible(
                     child: TextField(
+                      onChanged: (value){
+                        if(value.length==4){
+                          if(value==OTPFromApi){
+                            print("Correct OTP");
+                            isValidOTP = true;
+                            setState(() {});
+                          }
+                          else{
+                            print("inncorrect OTP");
+                          }
+                        }
+                      },
                       maxLength: 4,
                       keyboardType: TextInputType.number,
-                      obscuringCharacter: "*",
                       obscureText: true,
                       cursorColor: primaryColorOfApp,
                       style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
@@ -130,7 +175,7 @@ class _ScreenTwoState extends State<ScreenTwo> {
                           counter: Offstage(),
                           suffixIcon: Padding(
                             padding: const EdgeInsets.fromLTRB(0.0,0.0,40.0,0.0),
-                            child: Icon(MyCustomIcons.customPassword,size: 12.0,color: _otpFocusNode.hasFocus ?primaryColorOfApp : Colors.grey,),
+                            child: Icon(NuniyoCustomIcons.mobile_otp_black,size: 12.0,color: _otpFocusNode.hasFocus ?primaryColorOfApp : Colors.grey,),
                           ),
                           labelText: _otpFocusNode.hasFocus ? 'OTP' : 'Enter OTP',
                           labelStyle: TextStyle(
@@ -139,14 +184,21 @@ class _ScreenTwoState extends State<ScreenTwo> {
                       ),
                     )
                 ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                      onPressed: () {  },
-                      child: Text(
-                          "Resend OTP",style: GoogleFonts.openSans(
-                        textStyle: TextStyle(decoration: TextDecoration.underline,fontSize: 18,fontWeight: FontWeight.bold,color: primaryColorOfApp, letterSpacing: .5),
-                  ),),),
+                Visibility(
+                  visible: isOTPSendOnce ,
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                        child: Text("Resend OTP",style: GoogleFonts.openSans(textStyle: TextStyle(decoration: TextDecoration.underline,fontSize: 18,fontWeight: FontWeight.bold,color:enableOTPButton?primaryColorOfApp:Colors.black12, letterSpacing: .5),),),
+                        onPressed: enableOTPButton ? () async {
+                          enableOTPButton = false;
+                          setState((){});
+                          startTimer();
+                          if(phoneNumberString.length==10 && isPhoneNumberValid){
+                            OTPFromApi = await ApiRepo().fetchOTP(phoneNumberString);
+                          }
+                        }:null),
+                  ),
                 ),
                 SizedBox(height: 10,),
                 Flexible(
@@ -160,7 +212,7 @@ class _ScreenTwoState extends State<ScreenTwo> {
                         counter: Offstage(),
                           suffixIcon: Padding(
                             padding: const EdgeInsets.fromLTRB(0.0,0.0,20.0,0.0),
-                            child: Icon(MyCustomIcons.customReferralCode,size: 26.0,color: _referralCodeNode.hasFocus ?primaryColorOfApp : Colors.grey,),
+                            child: Icon(NuniyoCustomIcons.referral_code_black,size: 26.0,color: _referralCodeNode.hasFocus ?primaryColorOfApp : Colors.grey,),
                           ),
                           labelText: _referralCodeNode.hasFocus ? 'Referral Code' : 'Referral Code (Optional)',
                           labelStyle: TextStyle(
@@ -174,16 +226,19 @@ class _ScreenTwoState extends State<ScreenTwo> {
                   color: Colors.transparent,
                   width: MediaQuery.of(context).size.width,
                   height: 60,
-                  child: FlatButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    onPressed: () {Navigator.pushNamed(context, '/screenthree');},
-                    color: primaryColorOfApp,
-                    child: Text(
-                      "Proceed",
-                      style: GoogleFonts.openSans(
-                        textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 16,fontWeight: FontWeight.bold),)
+                  child: ColorFiltered(
+                    colorFilter: ColorFilter.mode(isValidOTP?Colors.transparent:Colors.grey, BlendMode.lighten),
+                    child: FlatButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      onPressed: () {isValidOTP ? Navigator.pushNamed(context, '/screentwo'):() => null; },
+                      color: primaryColorOfApp,
+                      child: Text(
+                        "Proceed",
+                        style: GoogleFonts.openSans(
+                          textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 16,fontWeight: FontWeight.bold),)
+                      ),
                     ),
                   ),
                 ),
@@ -193,5 +248,19 @@ class _ScreenTwoState extends State<ScreenTwo> {
         ),
       ),
     );
+  }
+
+  void startTimer() {
+    var duration = interval;
+    Timer.periodic(duration, (timer) {
+      setState(() {
+        print(timer.tick);
+        currentSeconds = timer.tick;
+        if (timer.tick >= _resendOTPIntervalTime){
+          enableOTPButton = true;
+          timer.cancel();
+        }
+      });
+    });
   }
 }

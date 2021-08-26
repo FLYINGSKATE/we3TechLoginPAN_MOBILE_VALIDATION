@@ -1,9 +1,7 @@
-import 'package:angel_broking_demo/icons/my_custom_icons.dart';
 import 'package:angel_broking_demo/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 
 class ScreenThree extends StatefulWidget {
   const ScreenThree({Key? key}) : super(key: key);
@@ -108,40 +106,46 @@ class _ScreenThreeState extends State<ScreenThree> {
                 WidgetHelper().DetailsTitle('Personal Details'),
                 //SizedBox(height: 20,),
                 Flexible(
-                    child: TextField(
-                      cursorColor: primaryColorOfApp,
-                      style: GoogleFonts.openSans(textStyle: TextStyle(color: Colors.black, letterSpacing: .5,fontSize: 14,fontWeight: FontWeight.bold)),
-                      focusNode: _fatherNameTextFieldFocusNode,
-                      onTap: _requestFatherNameTextFieldFocusNode,
-                      decoration: InputDecoration(
-                          counter: Offstage(),
-                          labelText: _fatherNameTextFieldFocusNode.hasFocus ? 'Father\'s Full Name' : 'Father\'s Full Name',
-                          labelStyle: TextStyle(
-                            color: _fatherNameTextFieldFocusNode.hasFocus ?primaryColorOfApp : Colors.grey,
-                          )
+                    child: Container(
+                      height: 80,
+                      child: TextField(
+                        cursorColor: primaryColorOfApp,
+                        style: GoogleFonts.openSans(textStyle: TextStyle(color: Colors.black, letterSpacing: .5,fontSize: 14,fontWeight: FontWeight.bold)),
+                        focusNode: _fatherNameTextFieldFocusNode,
+                        onTap: _requestFatherNameTextFieldFocusNode,
+                        decoration: InputDecoration(
+                            counter: Offstage(),
+                            labelText: _fatherNameTextFieldFocusNode.hasFocus ? 'Father\'s Full Name' : 'Father\'s Full Name',
+                            labelStyle: TextStyle(
+                              color: _fatherNameTextFieldFocusNode.hasFocus ?primaryColorOfApp : Colors.grey,
+                            )
+                        ),
                       ),
                     )
                 ),
                 SizedBox(height: 10,),
                 Flexible(
-                    child: TextField(
-                      keyboardType: TextInputType.number,
-                      cursorColor: primaryColorOfApp,
-                      style: GoogleFonts.openSans(textStyle: TextStyle(color: Colors.black, letterSpacing: 0.5,fontSize: 14,fontWeight: FontWeight.bold)),
-                      focusNode: _motherNameTextFieldFocusNode,
-                      onTap: _requestMotherNameTextFieldFocusNode,
-                      decoration: InputDecoration(
-                          counter: Offstage(),
-                          labelText: _motherNameTextFieldFocusNode.hasFocus ? 'Mother\'s Full Name' : 'Mother\'s Full Name',
-                          labelStyle: GoogleFonts.openSans(textStyle:TextStyle(fontSize: 14,letterSpacing: 0.5,
-                            color: _motherNameTextFieldFocusNode.hasFocus ?primaryColorOfApp : Colors.grey,
-                          ))
+                    child: Container(
+                      height: 80,
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        cursorColor: primaryColorOfApp,
+                        style: GoogleFonts.openSans(textStyle: TextStyle(color: Colors.black, letterSpacing: 0.5,fontSize: 14,fontWeight: FontWeight.bold)),
+                        focusNode: _motherNameTextFieldFocusNode,
+                        onTap: _requestMotherNameTextFieldFocusNode,
+                        decoration: InputDecoration(
+                            counter: Offstage(),
+                            labelText: _motherNameTextFieldFocusNode.hasFocus ? 'Mother\'s Full Name' : 'Mother\'s Full Name',
+                            labelStyle: GoogleFonts.openSans(textStyle:TextStyle(fontSize: 14,letterSpacing: 0.5,
+                              color: _motherNameTextFieldFocusNode.hasFocus ?primaryColorOfApp : Colors.grey,
+                            ))
+                        ),
                       ),
                     )
                 ),
                 SizedBox(height: 10,),
                 Container(
-                  height: 60.0,
+                  height: 75.0,
                   child: InputDecorator(
                     decoration: InputDecoration(
                         labelText: _maritialStatusIncomeDropDownFocusNode.hasFocus ? 'Maritial Status' : 'Maritial Status',
@@ -155,6 +159,7 @@ class _ScreenThreeState extends State<ScreenThree> {
                       child: DropdownButton<String>(
                         icon: Icon(Icons.keyboard_arrow_down_outlined),
                         value: maritialStatus,
+                        
                         style: GoogleFonts.openSans(textStyle: TextStyle(color: Colors.grey, letterSpacing: .5,fontSize: 14,fontWeight: FontWeight.bold)),
                         underline: Container(
                           color: Colors.black,
@@ -164,6 +169,7 @@ class _ScreenThreeState extends State<ScreenThree> {
                             maritialStatus = newValue!;
                           });
                         },
+
                         items: <String>['Single','Married','Unmarried','Divorced']
                             .map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
@@ -177,7 +183,7 @@ class _ScreenThreeState extends State<ScreenThree> {
                 ),
                 SizedBox(height: 10,),
                 Container(
-                  height: 60.0,
+                  height: 75.0,
                   child: InputDecorator(
                     decoration: InputDecoration(
                         labelText: _genderDropDownFocusNode.hasFocus ? 'Gender' : 'Gender',
@@ -214,7 +220,7 @@ class _ScreenThreeState extends State<ScreenThree> {
                 SizedBox(height: 10,),
                 WidgetHelper().DetailsTitle('Background'),
                 Container(
-                  height: 60.0,
+                  height: 75.0,
                   child: InputDecorator(
                     decoration: InputDecoration(
                         labelText: _annualIncomeDropDownFocusNode.hasFocus ? 'Annual Income' : 'Annual Income',
@@ -251,7 +257,7 @@ class _ScreenThreeState extends State<ScreenThree> {
                 ),
                 SizedBox(height: 10,),
                 Container(
-                  height: 60.0,
+                  height: 75.0,
                   child: InputDecorator(
                     decoration: InputDecoration(
                         labelText: _occupationDropDownFocusNode.hasFocus ? 'Occupation' : 'Occupation',
@@ -288,7 +294,7 @@ class _ScreenThreeState extends State<ScreenThree> {
                 ),
                 SizedBox(height: 10,),
                 Container(
-                  height: 60.0,
+                  height: 75.0,
                   child: InputDecorator(
                     decoration: InputDecoration(
                         labelText: _tradingExperienceDropDownFocusNode.hasFocus ? 'Trading Experience' : 'Trading Experience',
@@ -326,7 +332,7 @@ class _ScreenThreeState extends State<ScreenThree> {
                 ),
                 SizedBox(height: 10,),
                 Container(
-                  height: 60.0,
+                  height: 75.0,
                   child: InputDecorator(
                     decoration: InputDecoration(
 
@@ -365,7 +371,7 @@ class _ScreenThreeState extends State<ScreenThree> {
                 Container(
                   color: Colors.transparent,
                   width: MediaQuery.of(context).size.width,
-                  height: 60,
+                  height: 75,
                   child: FlatButton(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),

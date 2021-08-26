@@ -1,12 +1,18 @@
 import 'dart:io';
 
-import 'package:angel_broking_demo/screens/screen_one.dart';
+import 'package:angel_broking_demo/screens/screen_eight_ui.dart';
+import 'package:angel_broking_demo/screens/screen_five_ui.dart';
+import 'package:angel_broking_demo/screens/screen_four_ui.dart';
+import 'package:angel_broking_demo/screens/screen_nine_ui.dart';
+import 'package:angel_broking_demo/screens/screen_seven_ui.dart';
+import 'package:angel_broking_demo/screens/screen_six_ui.dart';
+import 'package:angel_broking_demo/screens/screen_two_ui.dart';
 import 'package:angel_broking_demo/screens/demo_screen.dart';
 import 'package:angel_broking_demo/screens/ocr_validation_screen.dart';
 import 'package:angel_broking_demo/screens/personal_details_screen.dart';
 import 'package:angel_broking_demo/screens/sample_Location.dart';
-import 'package:angel_broking_demo/screens/screen_three.dart';
-import 'package:angel_broking_demo/screens/screen_two.dart';
+import 'package:angel_broking_demo/screens/screen_three_ui.dart';
+import 'package:angel_broking_demo/screens/screen_one_ui.dart';
 import 'package:angel_broking_demo/screens/signature_pad_screen.dart';
 import 'package:angel_broking_demo/screens/splash_screen.dart';
 import 'package:angel_broking_demo/screens/email_validation_screen.dart';
@@ -67,7 +73,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => ScreenOne(),
+        '/': (context) => ScreenEight(),
         '/screenone':(context)=>ScreenOne(),
         '/screentwo':(context)=>ScreenTwo(),
         '/screenthree':(context)=>ScreenThree(),

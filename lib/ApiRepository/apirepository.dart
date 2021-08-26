@@ -8,7 +8,9 @@ class ApiRepo {
     'Content-Type': 'application/json'
   };
 
-  final String BASE_API_URL = 'https://10.0.2.2:5001';
+  //final String BASE_API_URL = 'https://10.0.2.2:5001';
+
+  final String BASE_API_URL = 'https://localhost:5001';
 
   ///Mobile Validation API
   Future<String> fetchOTP(String phoneNumber) async {
