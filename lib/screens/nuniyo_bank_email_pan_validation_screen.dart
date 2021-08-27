@@ -1,3 +1,4 @@
+///Sign Up Page 1
 import 'package:angel_broking_demo/ApiRepository/apirepository.dart';
 import 'package:angel_broking_demo/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,24 +6,45 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 
-class ScreenTwo extends StatefulWidget {
-  const ScreenTwo({Key? key}) : super(key: key);
+class BankPanEmailValidationScreen extends StatefulWidget {
+  const BankPanEmailValidationScreen({Key? key}) : super(key: key);
 
   @override
-  _ScreenTwoState createState() => _ScreenTwoState();
+  _BankPanEmailValidationScreenState createState() => _BankPanEmailValidationScreenState();
 }
 
-class _ScreenTwoState extends State<ScreenTwo> {
+class _BankPanEmailValidationScreenState extends State<BankPanEmailValidationScreen> {
 
   TextEditingController _ifscCodeTextEditingController = TextEditingController();
   TextEditingController _bankTextEditingController = TextEditingController();
+  TextEditingController _panTextEditingController = TextEditingController();
+  TextEditingController _dateController = TextEditingController();
+
+  String fullName = "KHAN ASHRAF SALIM";
+
+  _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime(1920, 1),
+        firstDate: DateTime(1920, 1),
+        lastDate: DateTime(2002));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+        var date =
+            "${picked.toLocal().day}-${picked.toLocal().month}-${picked.toLocal().year}";
+        _dateController.text = date;
+      });
+  }
+
+  DateTime selectedDate = DateTime.now();
 
   bool isPanValidatedSuccessfully = false;
   bool isBankValidatedSuccessfully = false;
 
   Color primaryColorOfApp = Color(0xff6A4EEE);
 
-  late FocusNode _emailTextFieldFocusNode,_otpTextFieldFocusNode,_panTextFieldFocusNode,_bankTextFieldFocusNode,_ifscTextFieldFocusNode;
+  late FocusNode _emailTextFieldFocusNode,_otpTextFieldFocusNode,_dateTextFieldFocusNode,_panTextFieldFocusNode,_bankTextFieldFocusNode,_ifscTextFieldFocusNode;
 
   @override
   void initState() {
@@ -32,11 +54,18 @@ class _ScreenTwoState extends State<ScreenTwo> {
     _panTextFieldFocusNode = FocusNode();
     _bankTextFieldFocusNode = FocusNode();
     _ifscTextFieldFocusNode = FocusNode();
+    _dateTextFieldFocusNode = FocusNode();
   }
 
   void _requestEmailIdTextFieldFocus(){
     setState(() {
       FocusScope.of(context).requestFocus(_emailTextFieldFocusNode);
+    });
+  }
+
+  void _requestDateTextFieldFocus(){
+    setState(() {
+      FocusScope.of(context).requestFocus(_dateTextFieldFocusNode);
     });
   }
 
@@ -71,11 +100,14 @@ class _ScreenTwoState extends State<ScreenTwo> {
     _bankTextFieldFocusNode.dispose();
     _ifscTextFieldFocusNode.dispose();
     _panTextFieldFocusNode.dispose();
+    _dateTextFieldFocusNode.dispose();
     super.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -158,6 +190,7 @@ class _ScreenTwoState extends State<ScreenTwo> {
                 Flexible(
                     child: TextField(
                       maxLength: 10,
+                      controller: _panTextEditingController,
                       cursorColor: primaryColorOfApp,
                       style: GoogleFonts.openSans(textStyle: TextStyle(color: Colors.black, letterSpacing: .5,fontSize: 14,fontWeight: FontWeight.bold)),
                       focusNode: _panTextFieldFocusNode,
@@ -170,6 +203,29 @@ class _ScreenTwoState extends State<ScreenTwo> {
                           )
                       ),
                     )
+                ),
+                SizedBox(height: 10,),
+                //DOB
+                Padding(
+                  padding: const EdgeInsets.all(0.0),
+                  child: GestureDetector(
+                    onTap: () => _selectDate(context),
+                    child: AbsorbPointer(
+                      child: TextField(
+                        cursorColor: primaryColorOfApp,
+                        style: GoogleFonts.openSans(textStyle: TextStyle(color: Colors.grey, letterSpacing: .5,fontSize: 14,fontWeight: FontWeight.bold)),
+                        onTap: _requestDateTextFieldFocus,
+                        decoration: InputDecoration(
+                          labelText: _dateTextFieldFocusNode.hasFocus ? 'Enter DOB' : 'Enter DOB',
+                          labelStyle: TextStyle(
+                            color: _dateTextFieldFocusNode.hasFocus ?primaryColorOfApp : Colors.grey,
+                          ),
+                          hintText: 'DD/MM/YYYY',
+                        ),
+                        controller: _dateController,
+                      ),
+                    ),
+                  ),
                 ),
                 SizedBox(height: 10,),
                 Flexible(
@@ -220,6 +276,10 @@ class _ScreenTwoState extends State<ScreenTwo> {
                       if(isBankValidatedSuccessfully){
                         isBankValidatedSuccessfully = true;
                         setState(() {});
+                      }
+                      isPanValidatedSuccessfully = await ApiRepo().fetchIsPanValid(fullName, _dateController.text, _panTextEditingController.text);
+                      if(isPanValidatedSuccessfully && isBankValidatedSuccessfully){
+                        Navigator.pushNamed(context, '/screenthree');
                       }
                     },
                     color: primaryColorOfApp,

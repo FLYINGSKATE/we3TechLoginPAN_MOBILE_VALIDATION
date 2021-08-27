@@ -146,11 +146,40 @@ class ApiRepo {
     }
   }
 
+  ///Digital Pad Signature Upload API - (INCOMPLETE)
+  Future<bool> DigitalSignatureUploadAPI(String imagePath,var imageP) async{
+    List<int> _selectedFile = await imageP.readAsBytes();
+    var request;
+    if(kIsWeb){
+      request = http.MultipartRequest('POST', Uri.parse(BASE_API_URL+'/api/DocumentOCR/OCR'));
+      request.files.add(await http.MultipartFile.fromBytes('front_part', _selectedFile,
+          contentType: new MediaType('application', 'octet-stream'),
+          filename: "file_up"));
+      request.headers.addAll(headers);
+    }
+    else{
+      request = http.MultipartRequest('POST', Uri.parse('http://localhost:44300/api/user/login/OCR'));
+      request.headers.addAll(headers);
+    }
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+      return true;
+    }
+    else {
+      print(response.reasonPhrase);
+      return false;
+    }
+  }
+
     //request.body = json.encode({
     //  "pan_no": "HCAPK4259Q",
     //  "full_name": "KHAN ASHRAF SALIM",
     //  "date_of_birth": "31-03-2000"
     //});
     ///BANK AND PAN : 39981374255
-///IFSC :SBIN0003671
+    ///IFSC :SBIN0003671
+
 }

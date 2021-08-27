@@ -3,14 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ScreenFive extends StatefulWidget {
-  const ScreenFive({Key? key}) : super(key: key);
+class OptionsScreen extends StatefulWidget {
+  const OptionsScreen({Key? key}) : super(key: key);
 
   @override
-  _ScreenFiveState createState() => _ScreenFiveState();
+  _OptionsScreenState createState() => _OptionsScreenState();
 }
 
-class _ScreenFiveState extends State<ScreenFive> {
+class _OptionsScreenState extends State<OptionsScreen> {
 
   Color primaryColorOfApp = Color(0xff6A4EEE);
 
@@ -70,12 +70,12 @@ class _ScreenFiveState extends State<ScreenFive> {
               ],
                 ),
                 Container(
-                  height: 400,
+                  height: 390,
                     decoration: BoxDecoration(
                         border: Border.all(
                           color: primaryColorOfApp,
                         ),
-                        borderRadius: BorderRadius.all(Radius.circular(20))
+                        borderRadius: BorderRadius.all(Radius.circular(15))
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -102,71 +102,59 @@ class _ScreenFiveState extends State<ScreenFive> {
                             ],
                           ),
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(45.0,0.0,0.0,0.0),
+                            padding: const EdgeInsets.fromLTRB(24.0,0.0,0.0,0.0),
                             child: Text("Buy and sell shares , mutual funds and derivatives on NSE and BSE",textAlign:TextAlign.left, style:GoogleFonts.openSans(textStyle: TextStyle(color: Colors.black,fontSize: 12.0,letterSpacing: .5)),),
                           ),
                           Column(
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(18.0,0.0,0.0,0.0),
-                                child: CheckboxListTile(
-                                  title: Text("Equity",textAlign:TextAlign.left, style:GoogleFonts.openSans(textStyle: TextStyle(color: Colors.black,fontSize: 18.0,letterSpacing: .5)),),
-                                  value: checkedValue,
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      checkedValue = newValue!;
-                                    });
-                                  },
-                                  controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
-                                ),
+                              CheckboxListTile(
+                                title: Text("Equity",textAlign:TextAlign.left, style:GoogleFonts.openSans(textStyle: TextStyle(color: Colors.black,fontSize: 18.0,letterSpacing: .5)),),
+                                value: checkedValue,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    checkedValue = newValue!;
+                                  });
+                                },
+                                controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
                               ),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(18.0,0.0,0.0,0.0),
-                                child: CheckboxListTile(
-                                  title: Text("F&O",textAlign:TextAlign.left, style:GoogleFonts.openSans(textStyle: TextStyle(color: Colors.black,fontSize: 18.0,letterSpacing: .5)),),
-                                  value: checkedValue,
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      checkedValue = newValue!;
-                                    });
-                                  },
-                                  controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
-                                ),
+                              CheckboxListTile(
+                                title: Text("F&O",textAlign:TextAlign.left, style:GoogleFonts.openSans(textStyle: TextStyle(color: Colors.black,fontSize: 18.0,letterSpacing: .5)),),
+                                value: checkedValue,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    checkedValue = newValue!;
+                                  });
+                                },
+                                controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
                               ),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(18.0,0.0,0.0,0.0),
-                                child: CheckboxListTile(
-                                  title: Text("Currency",textAlign:TextAlign.left, style:GoogleFonts.openSans(textStyle: TextStyle(color: Colors.black,fontSize: 18.0,letterSpacing: .5)),),
-                                  value: checkedValue,
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      checkedValue = newValue!;
-                                    });
-                                  },
-                                  controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
-                                ),
+                              CheckboxListTile(
+                                title: Text("Currency",textAlign:TextAlign.left, style:GoogleFonts.openSans(textStyle: TextStyle(color: Colors.black,fontSize: 18.0,letterSpacing: .5)),),
+                                value: checkedValue,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    checkedValue = newValue!;
+                                  });
+                                },
+                                controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
                               ),
-                              Padding(
-                                  padding: const EdgeInsets.fromLTRB(18.0,0.0,0.0,0.0),
-                                child: CheckboxListTile(
-                                  title: Text("Commodities",textAlign:TextAlign.left, style:GoogleFonts.openSans(textStyle: TextStyle(color: Colors.black,fontSize: 18.0,letterSpacing: .5)),),
-                                  value: checkedValue,
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      checkedValue = newValue!;
-                                    });
-                                  },
-                                  controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
-                                ),
+                              CheckboxListTile(
+                                title: Text("Commodities",textAlign:TextAlign.left, style:GoogleFonts.openSans(textStyle: TextStyle(color: Colors.black,fontSize: 18.0,letterSpacing: .5)),),
+                                value: checkedValue,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    checkedValue = newValue!;
+                                  });
+                                },
+                                controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
                               ),
                             ],
                           ),
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(10.0,0.0,0.0,0.0),
+                            padding: const EdgeInsets.fromLTRB(25.0,10.0,0.0,0.0),
                             child: Row(
                               children: [
-                                Text("₹ 20 ",textAlign:TextAlign.left, style:GoogleFonts.openSans(textStyle: TextStyle(color: Colors.black,fontSize: 14.0,letterSpacing: .5,fontWeight: FontWeight.bold))),
-                                Flexible(child: Text("per order for F&O , Currency and Commodity.",textAlign:TextAlign.left, style:GoogleFonts.openSans(textStyle: TextStyle(color: Colors.black,fontSize: 14.0,letterSpacing: .5)),)),
+                                Text("₹ 20 ",textAlign:TextAlign.left, style:GoogleFonts.openSans(textStyle: TextStyle(color: Colors.black,fontSize: 20.0,letterSpacing: .5,fontWeight: FontWeight.bold))),
+                                Flexible(child: Text("per order for F&O , Currency and Commodity.",maxLines:1 ,textAlign:TextAlign.left, style:GoogleFonts.openSans(textStyle: TextStyle(color: Colors.black,fontSize: 10.0,letterSpacing: .5)),)),
                               ],
                             ),
                           ),
@@ -174,6 +162,7 @@ class _ScreenFiveState extends State<ScreenFive> {
                       ),
                     ),
                 ),
+                SizedBox(height: 24.0,),
                 Divider(
                   height: 20,
                   thickness: 2,
@@ -183,8 +172,8 @@ class _ScreenFiveState extends State<ScreenFive> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text("Total",textAlign:TextAlign.left, style:GoogleFonts.openSans(textStyle: TextStyle(color: Colors.black,fontSize: 22.0,letterSpacing: .5,fontWeight: FontWeight.bold))),
-                    Text("₹ 20 ",textAlign:TextAlign.left, style:GoogleFonts.openSans(textStyle: TextStyle(color: Colors.black,fontSize: 22.0,letterSpacing: .5,fontWeight: FontWeight.bold))),
+                    Text("Total",textAlign:TextAlign.left, style:GoogleFonts.openSans(textStyle: TextStyle(color:primaryColorOfApp,fontSize: 22.0,letterSpacing: .5,fontWeight: FontWeight.bold))),
+                    Text("₹ 20 ",textAlign:TextAlign.left, style:GoogleFonts.openSans(textStyle: TextStyle(color:primaryColorOfApp,fontSize: 22.0,letterSpacing: .5,fontWeight: FontWeight.bold))),
                   ],
                 ),
                 Divider(

@@ -10,14 +10,14 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 
-class ScreenOne extends StatefulWidget {
-  const ScreenOne({Key? key}) : super(key: key);
+class MobileValidationLoginScreen extends StatefulWidget {
+  const MobileValidationLoginScreen({Key? key}) : super(key: key);
 
   @override
-  _ScreenOneState createState() => _ScreenOneState();
+  _MobileValidationLoginScreenState createState() => _MobileValidationLoginScreenState();
 }
 
-class _ScreenOneState extends State<ScreenOne> {
+class _MobileValidationLoginScreenState extends State<MobileValidationLoginScreen> {
 
   late String OTPFromApi;
   late String phoneNumberString;

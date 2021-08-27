@@ -9,14 +9,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 
-class ScreenFour extends StatefulWidget {
-  const ScreenFour({Key? key}) : super(key: key);
+class RayzorPayDemoScreen extends StatefulWidget {
+  const RayzorPayDemoScreen({Key? key}) : super(key: key);
 
   @override
-  _ScreenFourState createState() => _ScreenFourState();
+  _RayzorPayDemoScreenState createState() => _RayzorPayDemoScreenState();
 }
 
-class _ScreenFourState extends State<ScreenFour> {
+class _RayzorPayDemoScreenState extends State<RayzorPayDemoScreen> {
 
   static const platform = const MethodChannel("razorpay_flutter");
 

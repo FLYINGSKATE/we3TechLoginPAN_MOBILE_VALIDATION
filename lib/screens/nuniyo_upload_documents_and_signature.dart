@@ -8,16 +8,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 
-class ScreenEight extends StatefulWidget {
-  const ScreenEight({Key? key}) : super(key: key);
+class UploadDocumentScreen extends StatefulWidget {
+  const UploadDocumentScreen({Key? key}) : super(key: key);
 
   @override
-  _ScreenEightState createState() => _ScreenEightState();
+  _UploadDocumentScreenState createState() => _UploadDocumentScreenState();
 }
 
-class _ScreenEightState extends State<ScreenEight> {
+class _UploadDocumentScreenState extends State<UploadDocumentScreen> {
 
   List<XFile>? _imageFileListAadhar,_imageFileListPan;
 
@@ -48,6 +49,9 @@ class _ScreenEightState extends State<ScreenEight> {
       );
       setState(() {
         _imageFilePan = pickedFile;
+        print("we picked a file");
+        //Closing the dialog Choose an option to upload the pan image
+        Navigator.pop(context!);
       });
     } catch (e) {
       setState(() {
@@ -138,7 +142,9 @@ class _ScreenEightState extends State<ScreenEight> {
                       SizedBox(width: 30,),
                       IconButton(onPressed:(){ showUploadedPanCardImageDialog();}, icon: Icon(Icons.remove_red_eye_outlined,size: 36.0,)),
                       SizedBox(width: 30,),
-                      IconButton(onPressed:(){ }, icon: Icon(Icons.delete,size: 36.0,)),
+                      IconButton(onPressed:(){
+                        _imageFilePan = null;
+                      }, icon: Icon(Icons.delete,size: 36.0,)),
                     ],
                   ),
                 ),
@@ -199,11 +205,16 @@ class _ScreenEightState extends State<ScreenEight> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.check_circle,size: 36.0,),
+                      IconButton(onPressed:(){}, icon: Icon(Icons.check_circle,size: 36.0,)),
                       SizedBox(width: 30,),
-                      Icon(Icons.remove_red_eye_outlined,size: 36.0,),
+                      IconButton(onPressed:(){
+                        _handleSaveButtonPressed();
+                        showUploadedDigitalImageDialog();
+                      }, icon: Icon(Icons.remove_red_eye_outlined,size: 36.0,)),
                       SizedBox(width: 30,),
-                      Icon(Icons.delete,size: 36.0,),
+                      IconButton(onPressed:(){
+                        _handleClearButtonPressed();
+                      }, icon: Icon(Icons.delete,size: 36.0,)),
                     ],
                   ),
                 ),
@@ -264,7 +275,7 @@ class _ScreenEightState extends State<ScreenEight> {
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                         onPressed: () {
-                           _handleSaveButtonPressed();
+                           Navigator.pop(context);
                         },
                         color: primaryColorOfApp,
                         child: Text(
@@ -312,12 +323,13 @@ class _ScreenEightState extends State<ScreenEight> {
       },
     );
   }
+
   void _handleClearButtonPressed() {
     signatureGlobalKey.currentState!.clear();
   }
+
   void _handleSaveButtonPressed() async {
-    final data =
-    await signatureGlobalKey.currentState!.toImage(pixelRatio: 3.0);
+    final data = await signatureGlobalKey.currentState!.toImage(pixelRatio: 3.0);
     final bytes = await data.toByteData(format: ui.ImageByteFormat.png);
     await Navigator.of(context).push(
       MaterialPageRoute(
@@ -552,6 +564,10 @@ class _ScreenEightState extends State<ScreenEight> {
       return result;
     }
     return null;
+  }
+
+  void showUploadedDigitalImageDialog() {
+
   }
 
 }

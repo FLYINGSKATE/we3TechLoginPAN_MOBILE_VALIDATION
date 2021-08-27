@@ -34,6 +34,29 @@ class WidgetHelper extends StatefulWidget {
     );
   }
 
+  Widget NuniyoUINavigatorBtn(BuildContext context , String screenName ,String btnText){
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Container(
+        width: MediaQuery.of(context).size.width/2.5,
+        color: Colors.transparent,
+        height: 60,
+        child: FlatButton(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          onPressed:()=> Navigator.pushNamed(context, screenName),
+          color:Color(0xff6A4EEE),
+          child: Text(
+              btnText,
+              style: GoogleFonts.openSans(
+                textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 16,fontWeight: FontWeight.bold),)
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget DetailsTitle(String detailsTitle){
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

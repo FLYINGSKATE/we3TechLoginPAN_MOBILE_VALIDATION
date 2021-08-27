@@ -1,19 +1,18 @@
-//Aadhar KYC
-
+///Static Page
 import 'package:angel_broking_demo/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 
-class ScreenSix extends StatefulWidget {
-  const ScreenSix({Key? key}) : super(key: key);
+class EsignScreen extends StatefulWidget {
+  const EsignScreen({Key? key}) : super(key: key);
 
   @override
-  _ScreenSixState createState() => _ScreenSixState();
+  _EsignScreenState createState() => _EsignScreenState();
 }
 
-class _ScreenSixState extends State<ScreenSix> {
+class _EsignScreenState extends State<EsignScreen> {
 
   Color primaryColorOfApp = Color(0xff6A4EEE);
 
@@ -44,8 +43,22 @@ class _ScreenSixState extends State<ScreenSix> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                WidgetHelper().DetailsTitle('Aadhar KYC'),
-                Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",style: GoogleFonts.openSans(
+                WidgetHelper().DetailsTitle('Last Step !'),
+                Text("The last step is to digitally sign your application form(s).We will email you your login credentials once your forms are verified.",style: GoogleFonts.openSans(
+                  textStyle: TextStyle(color: Colors.black, letterSpacing: .5,fontSize: 16),
+                ),),
+                SizedBox(height: 20,),
+                Divider(thickness: 2.0,),
+                SizedBox(height: 20,),
+                Text("Equity",style: GoogleFonts.openSans(
+                  textStyle: TextStyle(color: Colors.black, letterSpacing: .5,fontSize: 22,fontWeight: FontWeight.bold),
+                ),),
+                SizedBox(height: 20,),
+                Text("This will be your account to buy and sell shares , mutual funds and derivatives on NSE and BSE.",style: GoogleFonts.openSans(
+                  textStyle: TextStyle(color: Colors.black, letterSpacing: .5,fontSize: 16),
+                ),),
+                SizedBox(height: 20,),
+                Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry.",style: GoogleFonts.openSans(
                   textStyle: TextStyle(color: Colors.black, letterSpacing: .5,fontSize: 16),
                 ),),
                 SizedBox(height: 20,),
@@ -60,16 +73,14 @@ class _ScreenSixState extends State<ScreenSix> {
                     onPressed: () {},
                     color: primaryColorOfApp,
                     child: Text(
-                        "Continue to DigiLocker",
+                        "eSign",
                         style: GoogleFonts.openSans(
                           textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 16,fontWeight: FontWeight.bold),)
                     ),
                   ),
                 ),
                 SizedBox(height: 20,),
-                Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",style: GoogleFonts.openSans(
-                  textStyle: TextStyle(color: Colors.black, letterSpacing: .5,fontSize: 16),
-                ),),
+                Divider(thickness: 2.0,),
               ],
             ),
           ),

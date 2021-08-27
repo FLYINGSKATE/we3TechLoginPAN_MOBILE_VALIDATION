@@ -1,23 +1,15 @@
 import 'dart:io';
 
-import 'package:angel_broking_demo/screens/screen_eight_ui.dart';
-import 'package:angel_broking_demo/screens/screen_five_ui.dart';
-import 'package:angel_broking_demo/screens/screen_four_ui.dart';
-import 'package:angel_broking_demo/screens/screen_nine_ui.dart';
-import 'package:angel_broking_demo/screens/screen_seven_ui.dart';
-import 'package:angel_broking_demo/screens/screen_six_ui.dart';
-import 'package:angel_broking_demo/screens/screen_two_ui.dart';
+import 'package:angel_broking_demo/screens/nuniyo_aadhar_kyc_screen.dart';
+import 'package:angel_broking_demo/screens/nuniyo_bank_email_pan_validation_screen.dart';
+import 'package:angel_broking_demo/screens/nuniyo_congrats_screen.dart';
+import 'package:angel_broking_demo/screens/nuniyo_esign_screen.dart';
+import 'package:angel_broking_demo/screens/nuniyo_mobile_validation_screen.dart';
+import 'package:angel_broking_demo/screens/nuniyo_options_screen.dart';
+import 'package:angel_broking_demo/screens/nuniyo_personal_details_screen.dart';
+import 'package:angel_broking_demo/screens/nuniyo_upload_documents_and_signature.dart';
+import 'package:angel_broking_demo/screens/razor_pay_demo.dart';
 import 'package:angel_broking_demo/screens/demo_screen.dart';
-import 'package:angel_broking_demo/screens/ocr_validation_screen.dart';
-import 'package:angel_broking_demo/screens/personal_details_screen.dart';
-import 'package:angel_broking_demo/screens/sample_Location.dart';
-import 'package:angel_broking_demo/screens/screen_three_ui.dart';
-import 'package:angel_broking_demo/screens/screen_one_ui.dart';
-import 'package:angel_broking_demo/screens/signature_pad_screen.dart';
-import 'package:angel_broking_demo/screens/splash_screen.dart';
-import 'package:angel_broking_demo/screens/email_validation_screen.dart';
-import 'package:angel_broking_demo/screens/mobile_validation_screen.dart';
-import 'package:angel_broking_demo/screens/pan_and_bank_validation_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -72,17 +64,16 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => ScreenNine(),
-        '/screenone':(context)=>ScreenOne(),
-        '/screentwo':(context)=>ScreenTwo(),
-        '/screenthree':(context)=>ScreenThree(),
-        '/mobilevalidation':(context)=>MobileValidation(),
-        '/emailvalidation':(context)=>EmailValidation(),
-        '/panandbankvalidation':(context)=>PanAndBankValidation(),
-        '/ocrvalidation':(context)=>OcrValidationScreen(title: 'Tech X Lab'),
-        '/personaldetails':(context)=>PersonalDetailsScreen(),
-        '/signaturepad':(context)=>SignaturePadScreen(),
-        '/demoscreen':(context)=>DemoScreen(),
+        '/': (context) => DemoScreen(),
+        '/mobilevalidationscreen':(context)=>MobileValidationLoginScreen(),
+        '/bankemailpanvalidationscreen':(context)=>BankPanEmailValidationScreen(),
+        '/uploaddocumentscreen':(context)=>UploadDocumentScreen(),
+        '/personaldetailsscreen':(context)=>PersonalDetailsScreen(),
+        '/optionsscreen':(context)=>OptionsScreen(),
+        '/aadharkycscreen':(context)=>AadharKYCScreen(),
+        '/rayzorpaydemoscreen':(context)=>RayzorPayDemoScreen(),
+        '/esignscreen':(context)=>EsignScreen(),
+        '/congratsscreen':(context)=>CongratsScreen(),
       },
     );
   }

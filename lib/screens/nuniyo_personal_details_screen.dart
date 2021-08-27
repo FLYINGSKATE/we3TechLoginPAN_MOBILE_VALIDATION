@@ -1,16 +1,17 @@
+import 'package:angel_broking_demo/nuniyo_custom_icons.dart';
 import 'package:angel_broking_demo/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ScreenThree extends StatefulWidget {
-  const ScreenThree({Key? key}) : super(key: key);
+class PersonalDetailsScreen extends StatefulWidget {
+  const PersonalDetailsScreen({Key? key}) : super(key: key);
 
   @override
-  _ScreenThreeState createState() => _ScreenThreeState();
+  _PersonalDetailsScreenState createState() => _PersonalDetailsScreenState();
 }
 
-class _ScreenThreeState extends State<ScreenThree> {
+class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
 
   Color primaryColorOfApp = Color(0xff6A4EEE);
 
@@ -90,7 +91,7 @@ class _ScreenThreeState extends State<ScreenThree> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        leading: Icon(Icons.ac_unit,color: Colors.black,),
+        leading: Icon(Icons.ac_unit,color: Colors.black),
         title: Text('Nuniyo',style: GoogleFonts.openSans(textStyle: TextStyle(color: Colors.black, letterSpacing: .5,fontWeight: FontWeight.bold)),),
         backgroundColor: Color(0xffF0ECFF),
         elevation: 0,
@@ -114,6 +115,7 @@ class _ScreenThreeState extends State<ScreenThree> {
                         focusNode: _fatherNameTextFieldFocusNode,
                         onTap: _requestFatherNameTextFieldFocusNode,
                         decoration: InputDecoration(
+                            contentPadding: EdgeInsets.fromLTRB(25.0,40.0,0.0,40.0),
                             counter: Offstage(),
                             labelText: _fatherNameTextFieldFocusNode.hasFocus ? 'Father\'s Full Name' : 'Father\'s Full Name',
                             labelStyle: TextStyle(
@@ -134,6 +136,7 @@ class _ScreenThreeState extends State<ScreenThree> {
                         focusNode: _motherNameTextFieldFocusNode,
                         onTap: _requestMotherNameTextFieldFocusNode,
                         decoration: InputDecoration(
+                            contentPadding: EdgeInsets.fromLTRB(25.0,40.0,0.0,40.0),
                             counter: Offstage(),
                             labelText: _motherNameTextFieldFocusNode.hasFocus ? 'Mother\'s Full Name' : 'Mother\'s Full Name',
                             labelStyle: GoogleFonts.openSans(textStyle:TextStyle(fontSize: 14,letterSpacing: 0.5,
@@ -157,9 +160,8 @@ class _ScreenThreeState extends State<ScreenThree> {
                     //isEmpty: _currentSelectedValue == '',
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
-                        icon: Icon(Icons.keyboard_arrow_down_outlined),
+                        icon: Icon(NuniyoCustomIcons.down_open,size: 24.0,color: Colors.grey,),
                         value: maritialStatus,
-                        
                         style: GoogleFonts.openSans(textStyle: TextStyle(color: Colors.grey, letterSpacing: .5,fontSize: 14,fontWeight: FontWeight.bold)),
                         underline: Container(
                           color: Colors.black,
@@ -181,7 +183,7 @@ class _ScreenThreeState extends State<ScreenThree> {
                     ),
                   ),
                 ),
-                SizedBox(height: 10,),
+                SizedBox(height: 20,),
                 Container(
                   height: 75.0,
                   child: InputDecorator(
@@ -195,7 +197,7 @@ class _ScreenThreeState extends State<ScreenThree> {
                     //isEmpty: _currentSelectedValue == '',
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
-                        icon: Icon(Icons.keyboard_arrow_down_outlined),
+                        icon: Icon(NuniyoCustomIcons.down_open,size: 24.0,color: Colors.grey,),
                         value: gender,
                         style: GoogleFonts.openSans(textStyle: TextStyle(color: Colors.grey, letterSpacing: .5,fontSize: 14,fontWeight: FontWeight.bold)),
                         underline: Container(
@@ -232,7 +234,7 @@ class _ScreenThreeState extends State<ScreenThree> {
                     //isEmpty: _currentSelectedValue == '',
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
-                        icon: Icon(Icons.keyboard_arrow_down_outlined),
+                        icon: Icon(NuniyoCustomIcons.down_open,size: 24.0,color: Colors.grey,),
                         value: annualIncome,
                         style: GoogleFonts.openSans(textStyle: TextStyle(color: Colors.grey, letterSpacing: .5,fontSize: 14,fontWeight: FontWeight.bold)),
                         underline: Container(
@@ -255,7 +257,7 @@ class _ScreenThreeState extends State<ScreenThree> {
                     ),
                   ),
                 ),
-                SizedBox(height: 10,),
+                SizedBox(height: 20,),
                 Container(
                   height: 75.0,
                   child: InputDecorator(
@@ -269,7 +271,7 @@ class _ScreenThreeState extends State<ScreenThree> {
                     //isEmpty: _currentSelectedValue == '',
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
-                        icon: Icon(Icons.keyboard_arrow_down_outlined),
+                        icon: Icon(NuniyoCustomIcons.down_open,size: 24.0,color: Colors.grey,),
                         value: occupation,
                         style: GoogleFonts.openSans(textStyle: TextStyle(color: Colors.grey, letterSpacing: .5,fontSize: 14,fontWeight: FontWeight.bold)),
                         underline: Container(
@@ -292,7 +294,7 @@ class _ScreenThreeState extends State<ScreenThree> {
                     ),
                   ),
                 ),
-                SizedBox(height: 10,),
+                SizedBox(height: 20,),
                 Container(
                   height: 75.0,
                   child: InputDecorator(
@@ -306,7 +308,7 @@ class _ScreenThreeState extends State<ScreenThree> {
                     //isEmpty: _currentSelectedValue == '',
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
-                        icon: Icon(Icons.keyboard_arrow_down_outlined),
+                        icon: Icon(NuniyoCustomIcons.down_open,size: 24.0,color: Colors.grey,),
                         value: occupation,
                         style: GoogleFonts.openSans(textStyle: TextStyle(color: Colors.grey, letterSpacing: .5,fontSize: 14,fontWeight: FontWeight.bold)),
                         underline: Container(
@@ -330,7 +332,7 @@ class _ScreenThreeState extends State<ScreenThree> {
                     ),
                   ),
                 ),
-                SizedBox(height: 10,),
+                SizedBox(height: 20,),
                 Container(
                   height: 75.0,
                   child: InputDecorator(
@@ -345,7 +347,7 @@ class _ScreenThreeState extends State<ScreenThree> {
                     //isEmpty: _currentSelectedValue == '',
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
-                        icon: Icon(Icons.keyboard_arrow_down_outlined),
+                        icon: Icon(NuniyoCustomIcons.down_open,size: 24.0,color: Colors.grey,),
                         value: politicallyExposed,
                         style: GoogleFonts.openSans(textStyle: TextStyle(color: Colors.grey, letterSpacing: .5,fontSize: 14,fontWeight: FontWeight.bold)),
                         underline: Container(
