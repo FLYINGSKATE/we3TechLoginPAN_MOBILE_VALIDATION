@@ -70,7 +70,6 @@ class _MobileValidationState extends State<MobileValidation> {
                           ),
                         ),
                         initialCountryCode: 'IN',
-
                         onChanged: (phone) async {
                           print(phone.completeNumber.length);
                           phoneNumberString = phone.completeNumber;

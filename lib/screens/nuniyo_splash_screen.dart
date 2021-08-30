@@ -1,11 +1,17 @@
 import 'dart:async';
 import 'package:angel_broking_demo/utils/authentication.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get_ip_address/get_ip_address.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'dart:io' show Platform;
+
+import 'package:sim_info/sim_info.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -17,6 +23,10 @@ class SplashScreenState extends State<SplashScreen> {
   ///
   /// When the location services are not enabled or permissions
   /// are denied the `Future` will return an error.
+  static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+  Map<String, dynamic> _deviceData = <String, dynamic>{};
+  ///
+  ///
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -45,8 +55,7 @@ class SplashScreenState extends State<SplashScreen> {
 
     if (permission == LocationPermission.deniedForever) {
       // Permissions are denied forever, handle appropriately.
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
+      return Future.error('Location permissions are permanently denied, we cannot request permissions.');
     }
 
     // When we reach here, permissions are granted and we can
@@ -58,6 +67,38 @@ class SplashScreenState extends State<SplashScreen> {
       await Geolocator.getLastKnownPosition();
     });
   }
+
+  _getIPAddress() async {
+    try {
+      /// Initialize Ip Address
+      var ipAddress = IpAddress(type: RequestType.json);
+
+      /// Get the IpAddress based on requestType.
+      dynamic data = await ipAddress.getIpAddress();
+      print("||||||||||||AAAPKA IP ADDRESS HAI :-"+data.toString());
+      print(data.toString());
+    } on IpAddressException catch (exception) {
+      /// Handle the exception.
+      print(exception.message);
+    }
+    // e.g. 113.139.104.65 or ""
+  }
+
+  _getSimDeviceInfo() async {
+    String allowsVOIP = await SimInfo.getAllowsVOIP;
+    String carrierName = await SimInfo.getCarrierName;
+    String isoCountryCode = await SimInfo.getIsoCountryCode;
+    String mobileCountryCode = await SimInfo.getMobileCountryCode;
+    String mobileNetworkCode = await SimInfo.getMobileNetworkCode;
+
+    print("Allows Voip"+allowsVOIP);
+    print("carrier name"+carrierName);
+    print("isoCountryCode"+isoCountryCode);
+    print("mobileCountryCode"+mobileCountryCode);
+    print("mobileNetworkCode"+mobileNetworkCode);
+  }
+
+  _getDeviceInfo(){}
 
   _getCurrentLocation() async {
     Position _currentPosition = await _determinePosition();
@@ -80,12 +121,16 @@ class SplashScreenState extends State<SplashScreen> {
     super.initState();
     if(!kIsWeb){
       _askForPermissions();
+      _getSimDeviceInfo();
+      print("GETTTTTIING DEVICE INFO");
+      print(_deviceData.values);
+      print("Upar Dekh Device Info");
+      _getIPAddress();
       _getCurrentLocation();
-      //EMULKATOR
+      //EMULATOR
       //_getBioMetricsAuthentication();
       WidgetsBinding.instance!.addPostFrameCallback((_){
-        Navigator.pushNamed(context, "/mobilevalidation");
-        // Add Your Code here.
+        Navigator.pushNamed(context, "/mobilevalidationscreen");
       });
 
     }

@@ -190,6 +190,7 @@ class _BankPanEmailValidationScreenState extends State<BankPanEmailValidationScr
                 Flexible(
                     child: TextField(
                       maxLength: 10,
+                      textCapitalization: TextCapitalization.characters,
                       controller: _panTextEditingController,
                       cursorColor: primaryColorOfApp,
                       style: GoogleFonts.openSans(textStyle: TextStyle(color: Colors.black, letterSpacing: .5,fontSize: 14,fontWeight: FontWeight.bold)),
@@ -230,8 +231,8 @@ class _BankPanEmailValidationScreenState extends State<BankPanEmailValidationScr
                 SizedBox(height: 10,),
                 Flexible(
                     child: TextField(
+                      textCapitalization: TextCapitalization.characters,
                       controller: _bankTextEditingController,
-                      keyboardType: TextInputType.number,
                       cursorColor: primaryColorOfApp,
                       style: GoogleFonts.openSans(textStyle: TextStyle(color: Colors.black, letterSpacing: .5,fontSize: 14,fontWeight: FontWeight.bold)),
                       focusNode: _bankTextFieldFocusNode,
@@ -248,6 +249,7 @@ class _BankPanEmailValidationScreenState extends State<BankPanEmailValidationScr
                 SizedBox(height: 10,),
                 Flexible(
                     child: TextField(
+                      textCapitalization: TextCapitalization.characters,
                       controller: _ifscCodeTextEditingController,
                       cursorColor: primaryColorOfApp,
                       style: GoogleFonts.openSans(textStyle: TextStyle(color: Colors.black, letterSpacing: .5,fontSize: 14,fontWeight: FontWeight.bold)),
@@ -263,7 +265,28 @@ class _BankPanEmailValidationScreenState extends State<BankPanEmailValidationScr
                     )
                 ),
                 SizedBox(height: 20,),
+                //Demo Button
                 Container(
+                  color: Colors.transparent,
+                  width: MediaQuery.of(context).size.width,
+                  height: 60,
+                  child: FlatButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    onPressed: (){
+                      Navigator.pushNamed(context, '/personaldetailsscreen');
+                    },
+                    color: primaryColorOfApp,
+                    child: Text(
+                        "Proceed",
+                        style: GoogleFonts.openSans(
+                          textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 16,fontWeight: FontWeight.bold),)
+                    ),
+                  ),
+                ),
+                //Real Button
+                /*Container(
                   color: Colors.transparent,
                   width: MediaQuery.of(context).size.width,
                   height: 60,
@@ -279,7 +302,7 @@ class _BankPanEmailValidationScreenState extends State<BankPanEmailValidationScr
                       }
                       isPanValidatedSuccessfully = await ApiRepo().fetchIsPanValid(fullName, _dateController.text, _panTextEditingController.text);
                       if(isPanValidatedSuccessfully && isBankValidatedSuccessfully){
-                        Navigator.pushNamed(context, '/screenthree');
+                        Navigator.pushNamed(context, '/UploadDocumentScreen');
                       }
                     },
                     color: primaryColorOfApp,
@@ -289,7 +312,7 @@ class _BankPanEmailValidationScreenState extends State<BankPanEmailValidationScr
                         textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 16,fontWeight: FontWeight.bold),)
                     ),
                   ),
-                ),
+                ),*/
               ],
             ),
           ),

@@ -182,6 +182,26 @@ class _OptionsScreenState extends State<OptionsScreen> {
                   indent: 20,
                   endIndent: 20,
                 ),
+                SizedBox(height: 30,),
+                Container(
+                  color: Colors.transparent,
+                  width: MediaQuery.of(context).size.width,
+                  height: 75,
+                  child: FlatButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/aadharkycscreen');
+                    },
+                    color: primaryColorOfApp,
+                    child: Text(
+                        "Proceed",
+                        style: GoogleFonts.openSans(
+                          textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 16,fontWeight: FontWeight.bold),)
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

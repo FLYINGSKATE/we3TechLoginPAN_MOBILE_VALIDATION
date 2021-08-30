@@ -81,6 +81,26 @@ class _EsignScreenState extends State<EsignScreen> {
                 ),
                 SizedBox(height: 20,),
                 Divider(thickness: 2.0,),
+                SizedBox(height: 20,),
+                Container(
+                  color: Colors.transparent,
+                  width: MediaQuery.of(context).size.width,
+                  height: 60,
+                  child: FlatButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/congratsscreen');
+                    },
+                    color: primaryColorOfApp,
+                    child: Text(
+                        "Finish",
+                        style: GoogleFonts.openSans(
+                          textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 16,fontWeight: FontWeight.bold),)
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

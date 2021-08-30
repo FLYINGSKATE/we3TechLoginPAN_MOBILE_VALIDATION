@@ -120,7 +120,7 @@ class _CongratsScreenState extends State<CongratsScreen> {
                                 children: [
                                   SizedBox(width:15.0),
                                   Icon(Icons.card_giftcard,color:Colors.grey),
-                                  SizedBox(width:18.0),
+                                  SizedBox(width:14.0),
                                   Text("Lorem Ipsum",style: GoogleFonts.openSans(
                                     textStyle: TextStyle(color: Colors.black, letterSpacing: .5,fontSize: 14),
                                   ),),

@@ -378,7 +378,9 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/optionsscreen');
+                    },
                     color: primaryColorOfApp,
                     child: Text(
                         "Proceed",

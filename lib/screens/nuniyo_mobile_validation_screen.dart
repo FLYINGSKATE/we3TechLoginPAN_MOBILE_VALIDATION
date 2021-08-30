@@ -222,7 +222,26 @@ class _MobileValidationLoginScreenState extends State<MobileValidationLoginScree
                     )
                 ),
                 SizedBox(height: 20,),
+                //Demo Button
                 Container(
+                  color: Colors.transparent,
+                  width: MediaQuery.of(context).size.width,
+                  height: 60,
+                  child: FlatButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    onPressed: () {Navigator.pushNamed(context, '/bankemailpanvalidationscreen'); },
+                    color: primaryColorOfApp,
+                    child: Text(
+                        "Proceed",
+                        style: GoogleFonts.openSans(
+                          textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 16,fontWeight: FontWeight.bold),)
+                    ),
+                  ),
+                ),
+                //Real Button
+                /*Container(
                   color: Colors.transparent,
                   width: MediaQuery.of(context).size.width,
                   height: 60,
@@ -232,7 +251,7 @@ class _MobileValidationLoginScreenState extends State<MobileValidationLoginScree
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
-                      onPressed: () {isValidOTP ? Navigator.pushNamed(context, '/screentwo'):() => null; },
+                      onPressed: () {Navigator.pushNamed(context, '/bankemailpanvalidationscreen'); },
                       color: primaryColorOfApp,
                       child: Text(
                         "Proceed",
@@ -241,7 +260,7 @@ class _MobileValidationLoginScreenState extends State<MobileValidationLoginScree
                       ),
                     ),
                   ),
-                ),
+                ),*/
               ],
             ),
           ),

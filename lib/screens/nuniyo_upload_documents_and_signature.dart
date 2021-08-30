@@ -218,6 +218,26 @@ class _UploadDocumentScreenState extends State<UploadDocumentScreen> {
                     ],
                   ),
                 ),
+                SizedBox(height: 10,),
+                Container(
+                  color: Colors.transparent,
+                  width: MediaQuery.of(context).size.width,
+                  height: 75,
+                  child: FlatButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/esignscreen');
+                    },
+                    color: primaryColorOfApp,
+                    child: Text(
+                        "Proceed",
+                        style: GoogleFonts.openSans(
+                          textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 16,fontWeight: FontWeight.bold),)
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

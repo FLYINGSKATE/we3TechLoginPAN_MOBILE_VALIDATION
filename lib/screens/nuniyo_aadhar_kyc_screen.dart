@@ -57,7 +57,9 @@ class _AadharKYCScreenState extends State<AadharKYCScreen> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/uploaddocumentscreen');
+                    },
                     color: primaryColorOfApp,
                     child: Text(
                         "Continue to DigiLocker",
