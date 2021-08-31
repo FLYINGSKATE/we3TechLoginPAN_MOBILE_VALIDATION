@@ -1,4 +1,4 @@
-import 'package:angel_broking_demo/screens/web_view.dart';
+import 'package:angel_broking_demo/ApiRepository/apirepository.dart';
 import 'package:angel_broking_demo/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -26,6 +26,10 @@ class _EmailValidationState extends State<EmailValidation> {
   };
 
   bool isValidOTP = false;
+
+  bool isValidEmail = false;
+
+  late String emailId;
 
   @override
   Widget build(BuildContext context) {
@@ -68,10 +72,13 @@ class _EmailValidationState extends State<EmailValidation> {
                             RegExp regex = new RegExp(pattern);
                             if (!regex.hasMatch(value) || value == null){
                               print('Enter a valid email address');
-                              fetchEmailOTP(value.trim());
+                              Navigator.pushNamed(context, 'panandbankvalidation');
+                              //fetchEmailOTP(value.trim());
                             }
                             else {
                               print("Noice Email");
+                              isValidEmail = true;
+                              emailId = value;
                             }
                           },
                       )
@@ -96,6 +103,11 @@ class _EmailValidationState extends State<EmailValidation> {
                           }
                         }
                       },
+                      onSubmitted: (value){
+                        if(isValidEmail){
+                          //ApiRepo().fetchEmailOTP(value);
+                        }
+                      },
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         suffixIcon: isValidOTP ? Icon(Icons.check_circle,color: Colors.green,) : Icon(Icons.clear_outlined,color:Colors.red),
@@ -109,7 +121,10 @@ class _EmailValidationState extends State<EmailValidation> {
                     alignment: Alignment.center,
                     child: Column(
                       children: [
-                        WidgetHelper().GradientButton(context,()=>Navigator.pushNamed(context, '/panvalidation')),
+                        WidgetHelper().GradientButton(context,() {
+                          Navigator.pushNamed(context, '/panandbankvalidation');
+                          ApiRepo().fetchEmailOTP(emailId);
+                      },'Next'),
                       ],
                     ),
                   ),
@@ -119,26 +134,5 @@ class _EmailValidationState extends State<EmailValidation> {
           ),
         )
     );
-  }
-
-  Future<void> fetchEmailOTP(String emailID) async {
-    var request = http.Request('POST', Uri.parse('http://localhost:44300/api/Notify/smsAPI'));
-    request.body = json.encode({
-      "smsContact": emailID
-    });
-    request.headers.addAll(headers);
-
-    http.StreamedResponse response = await request.send();
-
-    if (response.statusCode == 200) {
-      String result = await response.stream.bytesToString();
-      Map valueMap = jsonDecode(result);
-      //print(await response.stream.bytesToString());
-      print("Your OTP IS"+valueMap["jsonotpBKC"]);
-      OTPFromApi = valueMap["jsonotpBKC"];
-    }
-    else {
-      print(response.reasonPhrase);
-    }
   }
 }
